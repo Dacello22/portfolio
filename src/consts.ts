@@ -5,8 +5,7 @@ export const AUTHOR = "William Lunsford";
 export const ROLE = "Gameplay Programmer";
 
 export const SOCIALS = [
-  { label: "Email", href: "mailto:you@example.com" },
-  { label: "itch.io", href: "https://yourname.itch.io" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/yourname" },
+  { label: "Email", href: "mailto:williamlunsford02@gmail.com" },
+  { label: "LinkedIn", href: "www.linkedin.com/in/william-lunsford-10ab66418" },
   { label: "GitHub", href: "https://github.com/Dacello22" },
 ];

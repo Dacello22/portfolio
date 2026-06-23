@@ -20,39 +20,69 @@ const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
     </div>
   </section>
 
-  <section class="featured-section">
-    <h2>Featured Posts</h2>
-    <div class="carousel" id="featured-carousel">
-      <div class="carousel-track">
-        {featuredPosts.map((post) => (
-          <a class="card carousel-card" href={`/blog/${post.slug}/`}>
-            <p class="muted">
-              {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </p>
-            <h3>{post.data.title}</h3>
-            <p class="muted">{post.data.description}</p>
-          </a>
-        ))}
-        {Array.from({ length: PLACEHOLDER_SLOTS }).map(() => (
-          <div class="card carousel-card placeholder">
-            <p class="muted">More devlogs coming soon</p>
-          </div>
-        ))}
+  <section class="featured-section full-bleed">
+    <div class="featured-inner">
+      <div class="featured-header">
+        <h2>Featured Posts</h2>
+        <a class="view-all-btn" href="/blog">View All</a>
+      </div>
+      <div class="carousel" id="featured-carousel">
+        <div class="carousel-track">
+          {featuredPosts.map((post) => (
+            <a class="card carousel-card" href={`/blog/${post.slug}/`}>
+              <p class="muted">
+                {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </p>
+              <h3>{post.data.title}</h3>
+              <p class="muted">{post.data.description}</p>
+            </a>
+          ))}
+          {Array.from({ length: PLACEHOLDER_SLOTS }).map(() => (
+            <div class="card carousel-card placeholder">
+              <p class="muted">More devlogs coming soon</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <script>
-  const carousel = document.getElementById("featured-carousel");
+  function initFeaturedCarousel() {
+    const carousel = document.getElementById("featured-carousel");
+    if (!carousel || carousel.dataset.bound === "true") return;
+    carousel.dataset.bound = "true";
 
-  if (carousel) {
+    const maxScroll = () => carousel.scrollWidth - carousel.clientWidth;
+    const clamp = (v: number) => Math.min(maxScroll(), Math.max(0, v));
+
+    let target = carousel.scrollLeft;
+    let rafId: number | null = null;
+
+    const step = () => {
+      const current = carousel.scrollLeft;
+      const diff = target - current;
+      if (Math.abs(diff) < 0.5) {
+        carousel.scrollLeft = target;
+        rafId = null;
+        return;
+      }
+      carousel.scrollLeft = current + diff * 0.2;
+      rafId = requestAnimationFrame(step);
+    };
+
+    const queueStep = () => {
+      if (rafId === null) rafId = requestAnimationFrame(step);
+    };
+
     carousel.addEventListener(
       "wheel",
       (e) => {
         if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
         e.preventDefault();
-        carousel.scrollLeft -= e.deltaY;
+        target = clamp(target - e.deltaY);
+        queueStep();
       },
       { passive: false }
     );
@@ -66,6 +96,7 @@ const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
       if (e.pointerType !== "mouse") return;
       isDragging = true;
       dragDistance = 0;
+      target = carousel.scrollLeft;
       carousel.classList.add("dragging");
       startX = e.pageX;
       startScrollLeft = carousel.scrollLeft;
@@ -76,7 +107,9 @@ const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
       e.preventDefault();
       const dx = e.pageX - startX;
       dragDistance = Math.abs(dx);
-      carousel.scrollLeft = startScrollLeft - dx;
+      const next = clamp(startScrollLeft - dx);
+      carousel.scrollLeft = next;
+      target = next;
     });
 
     window.addEventListener("pointerup", () => {
@@ -88,4 +121,6 @@ const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
       if (dragDistance > 5) e.preventDefault();
     });
   }
+
+  document.addEventListener("astro:page-load", initFeaturedCarousel);
 </script>

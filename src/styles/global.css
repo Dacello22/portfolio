@@ -336,9 +336,50 @@ code {
   margin-top: 1rem;
 }
 
+.featured-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.featured-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.view-all-btn {
+  display: none;
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  backdrop-filter: blur(12px);
+}
+
+.view-all-btn:hover {
+  color: #fff;
+  border-color: rgba(96, 165, 250, 0.5);
+  text-decoration: none;
+  background: rgba(96, 165, 250, 0.12);
+}
+
+@media (min-width: 900px) {
+  .view-all-btn {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
 .carousel {
   overflow-x: auto;
-  scroll-snap-type: x proximity;
   scrollbar-width: none;
   cursor: grab;
   padding: 0.5rem 0 1.5rem;
@@ -350,7 +391,6 @@ code {
 
 .carousel.dragging {
   cursor: grabbing;
-  scroll-snap-type: none;
 }
 
 .carousel-track {
@@ -361,7 +401,6 @@ code {
 
 .carousel-card {
   flex: 0 0 300px;
-  scroll-snap-align: start;
   user-select: none;
 }
 
@@ -374,4 +413,88 @@ code {
   border-style: dashed;
   opacity: 0.55;
   min-height: 140px;
+}
+
+/* --- Blog filters --------------------------------------------------------- */
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.blog-search-input,
+.blog-select {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  backdrop-filter: blur(12px);
+}
+
+.blog-search-input {
+  flex: 1 1 240px;
+}
+
+.blog-search-input::placeholder {
+  color: var(--text-mute);
+}
+
+.blog-search-input:focus,
+.blog-select:focus {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tag-pill {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--text-mute);
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+
+.tag-pill:hover {
+  color: var(--text);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.tag-pill.active {
+  color: #fff;
+  background: rgba(96, 165, 250, 0.18);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.blog-year-group {
+  margin-top: 2.5rem;
+}
+
+.blog-year-group:first-of-type {
+  margin-top: 0;
+}
+
+.year-heading {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 1rem;
+}
+
+.card-tags {
+  margin-top: 0.75rem;
 }

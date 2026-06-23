@@ -106,8 +106,14 @@ a:hover {
 }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   border-bottom: 1px solid var(--border);
-  padding: 1.25rem 0;
+  padding: 1.1rem 0;
+  background: rgba(5, 6, 10, 0.55);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
 .site-header nav {
@@ -121,8 +127,9 @@ a:hover {
 .site-header .brand {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: -0.01em;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text);
 }
 
@@ -133,12 +140,15 @@ a:hover {
 
 .site-header .links {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.75rem;
 }
 
 .site-header .links a {
   color: var(--text-mute);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .site-header .links a:hover {
@@ -149,6 +159,12 @@ a:hover {
 main {
   padding: 3rem 0;
   min-height: 60vh;
+}
+
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
 }
 
 .site-footer {
@@ -190,23 +206,27 @@ h3 {
 }
 
 .card {
+  position: relative;
   display: block;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
   padding: 1.25rem;
   color: inherit;
   text-decoration: none;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .card:hover {
-  border-color: rgba(96, 165, 250, 0.4);
-  background-color: rgba(148, 163, 184, 0.1);
-  box-shadow: 0 0 24px rgba(96, 165, 250, 0.08);
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 32px rgba(96, 165, 250, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.4);
   text-decoration: none;
   color: inherit;
+  transform: translateY(-2px);
 }
 
 .card h3 {
@@ -261,4 +281,97 @@ pre {
 
 code {
   font-family: var(--font-mono);
+}
+
+/* --- Homepage hero ------------------------------------------------------- */
+.hero {
+  margin-top: -3rem;
+  min-height: 78vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.hero-inner {
+  max-width: 44rem;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 0;
+}
+
+.hero-name {
+  font-size: clamp(2.75rem, 9vw, 6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0.75rem 0 0;
+  line-height: 1.05;
+}
+
+.hero-role {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  margin: 0.75rem 0 0;
+}
+
+.hero-bio {
+  color: var(--text-mute);
+  max-width: 32rem;
+  margin: 1.25rem auto 0;
+}
+
+/* --- Featured-post carousel ---------------------------------------------- */
+.featured-section {
+  margin-top: 1rem;
+}
+
+.carousel {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel.dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+}
+
+.carousel-card {
+  flex: 0 0 300px;
+  scroll-snap-align: start;
+  user-select: none;
+}
+
+.carousel-card.placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-style: dashed;
+  opacity: 0.55;
+  min-height: 140px;
 }

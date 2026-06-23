@@ -1,28 +1,91 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { AUTHOR, ROLE } from "../consts";
 
-const featured = (await getCollection("blog", ({ data }) => !data.draft && data.featured))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+const featuredPosts = (await getCollection("blog", ({ data }) => !data.draft && data.featured)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
 ---
 
-<BaseLayout title="William Lunsford">
-  <section>
-    <h1 style="font-size: 3rem;">William Lunsford</h1>
-    <p style="color: var(--accent-soft); margin-top: 0.5rem; font-size: 1.1rem;">Game Developer</p>
-    <p class="muted" style="margin-top: 0.75rem; max-width: 36rem;">Building things, breaking things, writing about both.</p>
+<BaseLayout title={AUTHOR}>
+  <section class="hero full-bleed">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Game Developer Portfolio</p>
+      <h1 class="hero-name">{AUTHOR}</h1>
+      <p class="hero-role">{ROLE}</p>
+      <p class="hero-bio">Building things, breaking things, writing about both.</p>
+    </div>
   </section>
 
-  {featured && (
-    <section style="margin-top: 2.5rem;">
-      <h2>Featured Post</h2>
-      <a class="card" href={`/blog/${featured.slug}/`}>
-        <p class="muted">
-          {featured.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-        </p>
-        <h3>{featured.data.title}</h3>
-        <p class="muted">{featured.data.description}</p>
-      </a>
-    </section>
-  )}
+  <section class="featured-section">
+    <h2>Featured Posts</h2>
+    <div class="carousel" id="featured-carousel">
+      <div class="carousel-track">
+        {featuredPosts.map((post) => (
+          <a class="card carousel-card" href={`/blog/${post.slug}/`}>
+            <p class="muted">
+              {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </p>
+            <h3>{post.data.title}</h3>
+            <p class="muted">{post.data.description}</p>
+          </a>
+        ))}
+        {Array.from({ length: PLACEHOLDER_SLOTS }).map(() => (
+          <div class="card carousel-card placeholder">
+            <p class="muted">More devlogs coming soon</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<script>
+  const carousel = document.getElementById("featured-carousel");
+
+  if (carousel) {
+    carousel.addEventListener(
+      "wheel",
+      (e) => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        e.preventDefault();
+        carousel.scrollLeft -= e.deltaY;
+      },
+      { passive: false }
+    );
+
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let dragDistance = 0;
+
+    carousel.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse") return;
+      isDragging = true;
+      dragDistance = 0;
+      carousel.classList.add("dragging");
+      startX = e.pageX;
+      startScrollLeft = carousel.scrollLeft;
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const dx = e.pageX - startX;
+      dragDistance = Math.abs(dx);
+      carousel.scrollLeft = startScrollLeft - dx;
+    });
+
+    window.addEventListener("pointerup", () => {
+      isDragging = false;
+      carousel.classList.remove("dragging");
+    });
+
+    carousel.addEventListener("click", (e) => {
+      if (dragDistance > 5) e.preventDefault();
+    });
+  }
+</script>

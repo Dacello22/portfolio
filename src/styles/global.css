@@ -640,6 +640,12 @@ body.no-scroll .featured-section {
   margin-bottom: 1rem;
 }
 
+/* Blog list cards: fixed 2 columns instead of the generic auto-fit
+   grid, so the layout stays consistent regardless of post count. */
+.blog-year-group .grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .card-tags {
   margin-top: 0.75rem;
 }
@@ -1160,6 +1166,11 @@ body.no-scroll .featured-section {
   /* Search takes its own full row; year + tags share the next. */
   .blog-search-wrap {
     flex: 1 1 100%;
+  }
+
+  /* Single column on phones, since two would be too cramped. */
+  .blog-year-group .grid {
+    grid-template-columns: 1fr;
   }
 
   .tag-filter-popover {

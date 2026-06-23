@@ -16,16 +16,4 @@ whatever I'm building.
 - Postmortems on finished games
 - Notes on tools, engines, and workflow
 
-## Embedding media from R2
-
-Images and video for posts live in an R2 bucket rather than in the git repo, so the repo
-stays small and media loads from Cloudflare's CDN. Reference them with the public R2 base URL:
-
-```md
-![Cover art](https://YOUR_R2_PUBLIC_BASE_URL/devlog/hello-world/cover.jpg)
-```
-
-Once `PUBLIC_R2_BASE_URL` is set (see `.env.example`), swap in the real bucket URL above and
-in this post's `heroImage` frontmatter field.
-
 More soon.

@@ -29,6 +29,8 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
     size: big ? 30 + (i % 6) : 20 + (i % 6),
     opacity: big ? 0.95 : 0.7,
     rotate: Math.round(angleDeg - 90),
+    twinkleDelay: (i * 0.37) % 4,
+    twinkleDuration: 2.8 + (i % 5) * 0.3,
   };
 });
 
@@ -38,12 +40,14 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   <section class="hero full-bleed" id="hero">
     <div class="hero-backdrop" aria-hidden="true">
       {ringStars.map((s) => (
-        <svg
-          class="hero-star"
-          style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; opacity:${s.opacity}; transform:translate(-50%,-50%) rotate(${s.rotate}deg);`}
+        <span
+          class="hero-star-wrap"
+          style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; animation-delay:${s.twinkleDelay}s; animation-duration:${s.twinkleDuration}s;`}
         >
-          <use href="#cyber-star" />
-        </svg>
+          <svg class="hero-star" style={`opacity:${s.opacity}; transform:rotate(${s.rotate}deg);`}>
+            <use href="#cyber-star" />
+          </svg>
+        </span>
       ))}
     </div>
     <div class="hero-inner">
@@ -58,11 +62,6 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
       <div class="featured-header">
         <h2>Featured Posts</h2>
       </div>
-      <a class="featured-expand-arrow" href="/blog" id="featured-expand-arrow" aria-label="Open blog">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-      </a>
       <div class="carousel" id="featured-carousel">
         <div class="carousel-track">
           {featuredPosts.map((post) => (
@@ -84,6 +83,7 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
           ))}
         </div>
       </div>
+      <a class="view-all-link" href="/blog" id="view-all-link">View All Post</a>
     </div>
   </section>
 </BaseLayout>
@@ -164,16 +164,16 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
 
   document.addEventListener("astro:page-load", initFeaturedCarousel);
 
-  function initFeaturedExpandArrow() {
-    const arrow = document.getElementById("featured-expand-arrow");
+  function initViewAllLink() {
+    const link = document.getElementById("view-all-link");
     const overlay = document.getElementById("page-rise-overlay");
-    if (!arrow || arrow.dataset.bound === "true") return;
-    arrow.dataset.bound = "true";
+    if (!link || link.dataset.bound === "true") return;
+    link.dataset.bound = "true";
 
-    arrow.addEventListener("click", () => {
+    link.addEventListener("click", () => {
       overlay?.classList.add("open");
     });
   }
 
-  document.addEventListener("astro:page-load", initFeaturedExpandArrow);
+  document.addEventListener("astro:page-load", initViewAllLink);
 </script>

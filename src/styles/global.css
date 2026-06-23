@@ -172,6 +172,23 @@ h3 {
   color: var(--text);
 }
 
+.page-title {
+  position: relative;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
 .card {
   position: relative;
   display: block;
@@ -273,13 +290,53 @@ code {
   transform: translate(-50%, -50%);
   z-index: 0;
   pointer-events: none;
+  animation: ring-rotate 90s linear infinite;
+}
+
+@keyframes ring-rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+.hero-star-wrap {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation-name: star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
 }
 
 .hero-star {
-  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
   fill: #fff;
   filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.9)) drop-shadow(0 0 14px rgba(245, 158, 11, 0.5));
   overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-backdrop {
+    animation: none;
+  }
+
+  .hero-star-wrap {
+    animation: none;
+  }
 }
 
 .hero-inner {
@@ -370,41 +427,18 @@ body.no-scroll .featured-section:focus-within {
   gap: 1rem;
 }
 
-.featured-expand-arrow {
-  position: absolute;
-  top: -16px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-4px);
-  width: 2.25rem;
-  height: 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-mute);
-  backdrop-filter: blur(12px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+.view-all-link {
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0.5rem;
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.9rem;
 }
 
-.featured-expand-arrow svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-body.no-scroll .featured-section:hover .featured-expand-arrow,
-body.no-scroll .featured-section:focus-within .featured-expand-arrow {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
-
-.featured-expand-arrow:hover {
+.view-all-link:hover {
   color: var(--accent-soft);
-  border-color: rgba(245, 158, 11, 0.5);
 }
 
 .featured-header h2 {
@@ -646,6 +680,145 @@ body.no-scroll .featured-section:focus-within .featured-expand-arrow {
   color: #92400e;
   background: rgba(180, 83, 9, 0.08);
   border-color: rgba(180, 83, 9, 0.3);
+}
+
+/* --- Rendered post body typography ---------------------------------------- */
+.post-content {
+  line-height: 1.75;
+  font-size: 1.05rem;
+}
+
+.post-content > * + * {
+  margin-top: 1.15em;
+}
+
+.post-content h2,
+.post-content h3 {
+  scroll-margin-top: 6rem;
+}
+
+.post-content h2 {
+  font-size: 1.6rem;
+  margin-top: 2em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4em;
+}
+
+.post-content h3 {
+  font-size: 1.25rem;
+  margin-top: 1.6em;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: 1.4em;
+}
+
+.post-content li + li {
+  margin-top: 0.4em;
+}
+
+.post-content li::marker {
+  color: var(--text-mute);
+}
+
+.post-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1em;
+  color: var(--text-mute);
+  font-style: italic;
+}
+
+.post-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5em 0;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+
+.post-content th {
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+.post-content :not(pre) > code {
+  background: var(--border-soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  color: var(--accent-soft);
+}
+
+.post-content img {
+  display: block;
+  margin: 1.5em auto;
+}
+
+.post-content figure {
+  margin: 1.5em 0;
+}
+
+.post-content figcaption {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-mute);
+  margin-top: 0.5em;
+}
+
+.post-content kbd {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.45em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.post-content details {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.75em 1em;
+}
+
+.post-content summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-content mark {
+  background: rgba(245, 158, 11, 0.25);
+  color: var(--text);
+  padding: 0 0.15em;
+  border-radius: 2px;
+}
+
+.post-content del {
+  color: var(--text-mute);
+}
+
+/* Footnotes (GFM): remark-gfm renders these as a plain ol/li list
+   under a horizontal rule, so they inherit the rules above — this
+   just dials back the size to read as a reference section. */
+.post-content .footnotes {
+  font-size: 0.85rem;
+  color: var(--text-mute);
 }
 
 /* --- Reading progress + table of contents + back-to-top ------------------ */

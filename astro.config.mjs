@@ -7,5 +7,11 @@ import sitemap from "@astrojs/sitemap";
 // correct absolute URLs.
 export default defineConfig({
   site: "https://portfolio.williamlunsford02.workers.dev",
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Draft posts still build (so you can preview them directly) but
+      // shouldn't show up in search engines.
+      filter: (page) => !page.includes("/blog/example-post-showcase"),
+    }),
+  ],
 });

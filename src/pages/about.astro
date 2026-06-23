@@ -1,12 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SKILLS } from "../consts";
+import { SKILLS, FAVORITE_GENRES } from "../consts";
 ---
 
 <BaseLayout title="About" description="About William Lunsford">
-  <h1 class="page-title">About</h1>
+  <h1 class="page-title">About Me</h1>
   <p>
     Self-taught game developer since 2022, focused on gameplay programming in Unreal Engine with C++.
+    I prefer and specialize in VR game development — building for and around how people actually
+    move and interact in a headset, not just porting flat-screen design onto it. I develop and test
+    on a Meta Quest 3.
+  </p>
+  <p>
+    Outside of VR-specific work, I'm generally building toward the kinds of games I play the most:
+    MMORPGs, RTS, and adventure/action titles. That mix shows up in what I tend to build —
+    systems-heavy gameplay, persistent worlds, and strategic depth over quick arcade loops.
+  </p>
+
+  <h2>Favorite Genres</h2>
+  <p>
+    {FAVORITE_GENRES.map((g) => <span class="tag">{g}</span>)}
   </p>
 
   <h2>Skills &amp; Tools</h2>

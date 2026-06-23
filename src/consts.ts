@@ -21,6 +21,9 @@ export const SOCIALS = [
 export const SKILLS = [
   { category: "Engine", items: ["Unreal Engine"] },
   { category: "Languages", items: ["C++", "Blueprints"] },
+  { category: "VR Hardware", items: ["Meta Quest 3"] },
   { category: "Version Control", items: ["Git"] },
   { category: "Art & Content", items: ["Blender", "Substance Painter"] },
 ];
+
+export const FAVORITE_GENRES = ["MMORPG", "RTS", "Adventure/Action"];

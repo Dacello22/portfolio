@@ -1,15 +1,15 @@
-# William Lunsford — Portfolio
+# William Lunsford: Portfolio
 
 Static gamedev portfolio + blog. Astro, deployed to Cloudflare Workers (static assets),
 media served from a Cloudflare R2 bucket, auto-deployed via GitHub Actions.
 
 ## Stack
 
-- **[Astro](https://astro.build)** — static site generator, content collections for blog posts
-- **Cloudflare Workers (static assets)** — hosting, replaces the older "Workers Sites" / Pages flow
-- **Cloudflare R2** — object storage for images/video referenced in blog posts and project cards
-- **GitHub Actions** — builds and deploys on every push to `main`
-- **@astrojs/sitemap** — auto-generates `sitemap-index.xml` for Google/search engines
+- **[Astro](https://astro.build)**: static site generator, content collections for blog posts
+- **Cloudflare Workers (static assets)**: hosting, replaces the older "Workers Sites" / Pages flow
+- **Cloudflare R2**: object storage for images/video referenced in blog posts and project cards
+- **GitHub Actions**: builds and deploys on every push to `main`
+- **@astrojs/sitemap**: auto-generates `sitemap-index.xml` for Google/search engines
 
 ## Project structure
 
@@ -57,7 +57,7 @@ blog index until it's ready.
 
 ## Adding projects
 
-Edit `src/data/projects.ts` — it's a plain array, no CMS needed.
+Edit `src/data/projects.ts`. It's a plain array, no CMS needed.
 
 ## Serving images/video from R2
 
@@ -81,7 +81,7 @@ Set `PUBLIC_R2_BASE_URL` locally by copying `.env.example` to `.env` and filling
 
 1. Sign up at https://dash.cloudflare.com/sign-up (free plan is fine).
 2. Install Wrangler if you don't have it globally, or just use the local devDependency
-   once added — for one-off commands you can use `npx wrangler <command>`.
+   once added. For one-off commands you can use `npx wrangler <command>`.
 3. Authenticate:
    ```bash
    npx wrangler login
@@ -101,7 +101,7 @@ Then make it publicly readable so the site can load images/video directly:
    you own, e.g. `media.yourdomain.com`, if you have one).
 3. Copy the public URL it gives you (something like `https://pub-xxxxxxxx.r2.dev`).
 4. Put that URL in `.env` as `PUBLIC_R2_BASE_URL` for local dev, and add it as a GitHub
-   Actions secret (`PUBLIC_R2_BASE_URL`) so production builds pick it up too — see step 4.
+   Actions secret (`PUBLIC_R2_BASE_URL`) so production builds pick it up too. See step 4.
 
 Upload media either via the dashboard (drag and drop) or CLI:
 
@@ -124,7 +124,7 @@ live at:
 https://portfolio.<your-subdomain>.workers.dev
 ```
 
-Update `astro.config.mjs`'s `site` value to that exact URL — this is required for the
+Update `astro.config.mjs`'s `site` value to that exact URL. This is required for the
 sitemap to emit correct absolute URLs for Google.
 
 ### 4. GitHub repo + Actions secrets
@@ -138,8 +138,8 @@ secrets at **Settings → Secrets and variables → Actions → New repository s
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → right sidebar of any zone/Workers page, or `npx wrangler whoami` |
 | `PUBLIC_R2_BASE_URL` | The public R2 URL from step 2 |
 
-After secrets are set, every push to `main` runs `.github/workflows/deploy.yml`:
-build → deploy to Workers automatically.
+After secrets are set, every push to `main` runs `.github/workflows/deploy.yml`: build,
+then deploy to Workers automatically.
 
 ### 5. Google indexing
 
@@ -149,4 +149,4 @@ Once live:
 2. Add your property (the workers.dev URL or custom domain).
 3. Submit `https://YOUR_SITE/sitemap-index.xml` under **Sitemaps**.
 
-That's the whole loop — write a markdown file, push, it's live and indexed.
+That's the whole loop: write a markdown file, push, and it's live and indexed.

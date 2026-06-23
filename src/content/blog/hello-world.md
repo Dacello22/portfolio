@@ -1,5 +1,5 @@
 ---
-title: "Hello, World — Starting This Devlog"
+title: "Hello, World: Starting This Devlog"
 description: "First post on this site: why I'm writing a gamedev blog and what's coming next."
 pubDate: 2026-06-22
 tags: ["devlog", "meta"]

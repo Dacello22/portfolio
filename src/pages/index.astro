@@ -9,20 +9,25 @@ const featuredPosts = (await getCollection("blog", ({ data }) => !data.draft && 
 
 const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
 
-// Full ring of sharp stars encircling the name, sized to the text
-// block rather than scattered across the page.
-const ringStars = Array.from({ length: 14 }, (_, i) => {
-  const angle = (i / 14) * Math.PI * 2;
+// Ring of sharp stars encircling the name, each rotated so one of
+// its points aims at the center (the star shape has 4-fold symmetry
+// with a point at local "up" / -90deg, so rotating by angle-90
+// aligns a point toward the ring center).
+const RING_COUNT = 22;
+const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
+  const angle = (i / RING_COUNT) * Math.PI * 2;
+  const angleDeg = (angle * 180) / Math.PI;
   const cx = 50;
   const cy = 50;
   const rx = 46;
   const ry = 48;
+  const big = i % 3 === 0;
   return {
     x: cx + rx * Math.cos(angle),
     y: cy + ry * Math.sin(angle),
-    size: 7 + (i % 3) * 4,
-    opacity: 0.45 + (i % 3) * 0.15,
-    glow: i % 3 === 2,
+    size: big ? 22 + (i % 5) : 14 + (i % 5),
+    opacity: big ? 0.95 : 0.7,
+    rotate: Math.round(angleDeg - 90),
   };
 });
 ---
@@ -33,14 +38,14 @@ const ringStars = Array.from({ length: 14 }, (_, i) => {
       {ringStars.map((s) => (
         <svg
           class="hero-star"
-          class:list={[{ "hero-star-glow": s.glow }]}
-          style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; opacity:${s.opacity};`}
+          style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; opacity:${s.opacity}; transform:translate(-50%,-50%) rotate(${s.rotate}deg);`}
         >
           <use href="#cyber-star" />
         </svg>
       ))}
     </div>
     <div class="hero-inner">
+      <p class="hero-eyebrow">Game Developer Portfolio</p>
       <h1 class="hero-name">{AUTHOR}</h1>
       <p class="hero-role">{ROLE}</p>
     </div>

@@ -408,6 +408,7 @@ body.no-scroll .featured-section {
 .featured-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -439,6 +440,10 @@ body.no-scroll .featured-section {
   display: flex;
   gap: 1.25rem;
   width: max-content;
+  /* Centers the cards when they're narrower than the viewport; when
+     they overflow, auto-margins collapse to 0 so scrolling still
+     starts from the first card. */
+  margin-inline: auto;
 }
 
 .carousel-card {

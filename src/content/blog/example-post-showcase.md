@@ -52,9 +52,26 @@ featured: false # optional, defaults to false — true adds it to the homepage c
 
 ## Reading time and table of contents — automatic, no field needed
 
-Reading time is computed from word count (~200 words/min) and shown next to the date. The
-"On this page" sidebar (visible on wide screens) is built from every `##` and `###` heading
-below — you don't list them anywhere, they're just picked up automatically.
+Reading time is computed from word count (~200 words/min) and shown next to the date.
+
+The "On this page" box is the same kind of automatic — nothing to set up, but the rules for
+when it shows are specific:
+
+- It's built from every `##` and `###` heading in the post. `#` (the title) doesn't count,
+  and anything deeper than `###` is ignored.
+- It only appears if the post has **more than one** heading. A single `##` isn't enough to
+  bother with a sidebar for.
+- It only renders on screens **1440px and wider**. Below that there isn't enough room beside
+  the centered content column to show it without squeezing the article, so it just hides —
+  the page layout never shifts to make room for it.
+- On qualifying screens it's `position: fixed` in the left margin and stays in view as you
+  scroll past the heading it's tracking. The currently-visible section is highlighted in the
+  sidebar automatically as you scroll.
+- The heading anchors it links to (`#what-s-coming`, etc.) are auto-generated from the
+  heading text — you don't write or set those either.
+
+If you want a heading to show up here, just use `##`/`###`. If you don't want a heading
+included, keep it at `####` or deeper, or don't add a heading at all.
 
 ## Basic text formatting
 

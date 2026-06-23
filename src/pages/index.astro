@@ -20,7 +20,7 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   const angleDeg = (angle * 180) / Math.PI;
   const cx = 50;
   const cy = 50;
-  const rx = 42; // base 38, scaled up ~10%
+  const rx = 50; // widened so stars clear the name with a small gap
   const ry = 73; // base 58 -> stretched to 66 vertically, then scaled up ~10%
   const big = i % 3 === 0;
   return {

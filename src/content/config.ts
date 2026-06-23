@@ -6,7 +6,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     // Short blurb shown on the /blog list page. Falls back to
-    // `description` if omitted — only set this when you want the
+    // `description` if omitted. Only set this when you want the
     // list-page text to read differently from the SEO/share text.
     excerpt: z.string().optional(),
     pubDate: z.coerce.date(),

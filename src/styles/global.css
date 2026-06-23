@@ -51,7 +51,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   /* Stop mobile browsers from auto-inflating text on orientation
-     change / reader heuristics — we size everything intentionally. */
+     change or reader heuristics. We size everything intentionally. */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -67,7 +67,7 @@ body {
 /* No-scroll homepage: header + hero + docked carousel fill exactly
    one viewport, nothing more. `svh` (small viewport height) keeps the
    docked bottom shelf reachable on mobile even when the browser's
-   address bar is showing — plain `vh` would push it under the chrome. */
+   address bar is showing. Plain `vh` would push it under the chrome. */
 body.no-scroll {
   height: 100vh;
   height: 100svh;
@@ -295,7 +295,7 @@ code {
   position: absolute;
   left: 50%;
   top: 50%;
-  /* Square box — equal width/height so an equal rx/ry below produces
+  /* Square box, equal width/height so an equal rx/ry below produces
      an actual circle, not an ellipse stretched by the box's own
      aspect ratio. */
   width: min(95vw, 78vh, 820px);
@@ -391,7 +391,7 @@ code {
 }
 
 /* Docked at the bottom of the no-scroll homepage, sitting directly on
-   the black background — no panel. The hero fills the space above it
+   the black background with no panel. The hero fills the space above it
    and the cards stay horizontally scrollable. */
 body.no-scroll .featured-section {
   flex: 0 0 auto;
@@ -819,7 +819,7 @@ body.no-scroll .featured-section {
 }
 
 /* Footnotes (GFM): remark-gfm renders these as a plain ol/li list
-   under a horizontal rule, so they inherit the rules above — this
+   under a horizontal rule, so they inherit the rules above. This
    just dials back the size to read as a reference section. */
 .post-content .footnotes {
   font-size: 0.85rem;
@@ -1098,7 +1098,7 @@ body.no-scroll .featured-section {
 }
 
 /* ==========================================================================
-   Responsive — tablet & phone
+   Responsive: tablet and phone.
    Existing styles target desktop; these max-width queries adapt down to
    smaller viewports. Breakpoints chosen where the layout actually starts
    to feel cramped, per content rather than arbitrary device widths.

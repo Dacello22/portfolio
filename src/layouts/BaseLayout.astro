@@ -70,7 +70,7 @@ const jsonLd = {
     <header class="site-header">
       <div class="container">
         <nav>
-          <a class="brand" href="/" aria-label={`${SITE_TITLE} — Home`}>
+          <a class="brand" href="/" aria-label="Home">
             <svg><use href="#home-icon" /></svg>
           </a>
           <div class="links">
@@ -88,7 +88,7 @@ const jsonLd = {
 
 <script>
   // Clicking a nav link for the page you're already on still made
-  // Astro re-run the transition/page-load lifecycle for no reason —
+  // Astro re-run the transition/page-load lifecycle for no reason, so
   // skip the navigation entirely when the link points at the current
   // page.
   function initNavGuard() {
@@ -103,8 +103,8 @@ const jsonLd = {
     // event's default action gets prevented later. Running in the
     // capture phase means we see the click before that listener does,
     // and stopping propagation here keeps it from ever reaching Astro
-    // at all — otherwise a same-page click still replayed the full
-    // page transition (visible flash, animations like the hero ring
+    // at all. Otherwise a same-page click still replayed the full page
+    // transition (visible flash, animations like the hero ring
     // restarting from scratch).
     document.addEventListener(
       "click",

@@ -104,6 +104,7 @@ const jsonLd = {
     <button class="sound-mute-btn" id="sound-mute-btn" type="button" aria-label="Mute hover sounds" aria-pressed="false">
       <svg><use href="#sound-on" /></svg>
     </button>
+    <div id="page-rise-overlay" class="page-rise-overlay" transition:persist aria-hidden="true"></div>
   </body>
 </html>
 
@@ -139,7 +140,7 @@ const jsonLd = {
       osc.frequency.setValueAtTime(95, now);
       osc.frequency.exponentialRampToValueAtTime(50, now + 0.18);
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.32, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.07, now + 0.015);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
       osc.connect(gain).connect(audioCtx.destination);
       osc.start(now);
@@ -167,4 +168,17 @@ const jsonLd = {
   }
 
   document.addEventListener("astro:page-load", initHoverSound);
+
+  function revealAfterRise() {
+    const overlay = document.getElementById("page-rise-overlay");
+    if (!overlay || !overlay.classList.contains("open")) return;
+    setTimeout(() => {
+      overlay.classList.add("fade-out");
+      setTimeout(() => {
+        overlay.classList.remove("open", "fade-out");
+      }, 420);
+    }, 120);
+  }
+
+  document.addEventListener("astro:page-load", revealAfterRise);
 </script>

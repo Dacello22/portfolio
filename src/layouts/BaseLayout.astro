@@ -1,13 +1,25 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, AUTHOR, SOCIALS } from "../consts";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = "William Lunsford, Game Developer" } = Astro.props;
-const pageTitle = title === "William Lunsford" ? title : `${title} | William Lunsford`;
+const { title, description = SITE_DESCRIPTION } = Astro.props;
+const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: AUTHOR,
+  jobTitle: "Game Developer",
+  url: SITE_URL,
+  sameAs: SOCIALS.filter((s) => s.href.startsWith("http")).map((s) => s.href),
+};
 ---
 
 <!doctype html>
@@ -17,13 +29,26 @@ const pageTitle = title === "William Lunsford" ? title : `${title} | William Lun
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+    <ClientRouter />
   </head>
   <body>
     <header class="site-header">
       <div class="container">
         <nav>
-          <a class="brand" href="/">William Lunsford</a>
+          <a class="brand" href="/">{SITE_TITLE}</a>
           <div class="links">
             <a href="/blog">Blog</a>
             <a href="/about">About</a>
@@ -37,8 +62,15 @@ const pageTitle = title === "William Lunsford" ? title : `${title} | William Lun
       <slot />
     </main>
     <footer class="site-footer">
-      <div class="container">
-        <p>&copy; {new Date().getFullYear()} William Lunsford. Built with Astro.</p>
+      <div class="container footer-inner">
+        <p>&copy; {new Date().getFullYear()} {SITE_TITLE}. Built with Astro.</p>
+        <div class="footer-links">
+          {SOCIALS.map((s) => (
+            <a href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel="noopener">
+              {s.label}
+            </a>
+          ))}
+        </div>
       </div>
     </footer>
   </body>

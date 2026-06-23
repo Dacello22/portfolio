@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const featured = (await getCollection("blog", ({ data }) => !data.draft && data.featured))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
 ---
 
 <BaseLayout title="William Lunsford">
@@ -8,4 +12,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p style="color: var(--accent-soft); margin-top: 0.5rem; font-size: 1.1rem;">Game Developer</p>
     <p class="muted" style="margin-top: 0.75rem; max-width: 36rem;">Building things, breaking things, writing about both.</p>
   </section>
+
+  {featured && (
+    <section style="margin-top: 2.5rem;">
+      <h2>Featured Post</h2>
+      <a class="card" href={`/blog/${featured.slug}/`}>
+        <p class="muted">
+          {featured.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+        <h3>{featured.data.title}</h3>
+        <p class="muted">{featured.data.description}</p>
+      </a>
+    </section>
+  )}
 </BaseLayout>

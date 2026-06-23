@@ -4,6 +4,7 @@ description: "First post on this site: why I'm writing a gamedev blog and what's
 pubDate: 2026-06-22
 tags: ["devlog", "meta"]
 heroImage: "devlog/hello-world/cover.jpg"
+featured: true
 ---
 
 This is the first post on my new gamedev portfolio site, built with [Astro](https://astro.build)

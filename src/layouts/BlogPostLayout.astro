@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { r2Url } from "../lib/r2";
 
 interface Props {
   title: string;
@@ -7,9 +8,10 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   tags?: string[];
+  heroImage?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [], heroImage } = Astro.props;
 
 const dateFmt = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -17,7 +19,8 @@ const dateFmt = (d: Date) =>
 
 <BaseLayout title={title} description={description}>
   <article>
-    <p class="muted">
+    {heroImage && <img src={r2Url(heroImage)} alt={title} loading="lazy" decoding="async" />}
+    <p class="muted" style="margin-top: 1rem;">
       {dateFmt(pubDate)}
       {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
     </p>

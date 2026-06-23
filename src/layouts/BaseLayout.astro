@@ -14,6 +14,7 @@ const { title, description = SITE_DESCRIPTION, image, noScroll = false } = Astro
 const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 const imageURL = image ? new URL(image, SITE_URL).toString() : undefined;
+const isHome = Astro.url.pathname === "/";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -70,9 +71,12 @@ const jsonLd = {
     <header class="site-header">
       <div class="container">
         <nav>
-          <a class="brand" href="/" aria-label="Home">
-            <svg><use href="#home-icon" /></svg>
-          </a>
+          {!isHome && (
+            <a class="brand" href="/" aria-label="Home">
+              <!-- <svg><use href="#home-icon" /></svg> -->
+               William Lunsford
+            </a>
+          )}
           <div class="links">
             <a href="/blog">Blog</a>
             <a href="/contact">Contact</a>

@@ -11,7 +11,13 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+
+const wordCount = post.body.trim().split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+// Only h2/h3 belong in the table of contents — h1 is the post title.
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 <BlogPostLayout
@@ -21,6 +27,8 @@ const { Content } = await post.render();
   updatedDate={post.data.updatedDate}
   tags={post.data.tags}
   heroImage={post.data.heroImage}
+  readingTime={readingTime}
+  headings={tocHeadings}
 >
   <Content />
 </BlogPostLayout>

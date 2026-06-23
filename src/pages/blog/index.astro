@@ -32,16 +32,40 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       <option value="">All years</option>
       {years.map((y) => <option value={y}>{y}</option>)}
     </select>
-  </div>
 
-  {allTags.length > 0 && (
-    <div class="tag-filters" id="tag-filters">
-      <button type="button" class="tag-pill active" data-tag="">All</button>
-      {allTags.map((t) => (
-        <button type="button" class="tag-pill" data-tag={t}>{t}</button>
-      ))}
-    </div>
-  )}
+    {allTags.length > 0 && (
+      <div class="tag-filter">
+        <button
+          type="button"
+          id="tag-filter-toggle"
+          class="tag-filter-toggle"
+          aria-expanded="false"
+          aria-controls="tag-filter-popover"
+        >
+          <span id="tag-filter-label">Tags</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <button type="button" id="tag-filter-all" class="tag-filter-all-btn">All</button>
+
+        <div class="tag-filter-popover" id="tag-filter-popover" hidden>
+          <div class="tag-filter-popover-header">
+            <span>Filter by tag</span>
+            <button type="button" id="tag-filter-clear">Clear</button>
+          </div>
+          <div class="tag-filter-options">
+            {allTags.map((t) => (
+              <label class="tag-checkbox">
+                <input type="checkbox" value={t} />
+                <span>{t}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
 
   <p class="muted" id="blog-empty" style="display:none;">No posts match your search.</p>
 
@@ -82,12 +106,25 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
     search.dataset.bound = "true";
 
     const yearSelect = document.getElementById("blog-year-filter") as HTMLSelectElement | null;
-    const tagButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".tag-pill"));
     const groups = Array.from(document.querySelectorAll<HTMLElement>(".blog-year-group"));
     const emptyMsg = document.getElementById("blog-empty");
+    const tagToggle = document.getElementById("tag-filter-toggle") as HTMLButtonElement | null;
+    const tagAllBtn = document.getElementById("tag-filter-all");
+    const tagClearBtn = document.getElementById("tag-filter-clear");
+    const tagPopover = document.getElementById("tag-filter-popover");
+    const tagLabel = document.getElementById("tag-filter-label");
+    const tagCheckboxes = Array.from(document.querySelectorAll<HTMLInputElement>(".tag-checkbox input"));
     if (!yearSelect || !emptyMsg) return;
 
-    let activeTag = "";
+    function selectedTags(): string[] {
+      return tagCheckboxes.filter((cb) => cb.checked).map((cb) => cb.value.toLowerCase());
+    }
+
+    function updateTagLabel() {
+      const n = selectedTags().length;
+      if (tagLabel) tagLabel.textContent = n > 0 ? `Tags (${n})` : "Tags";
+      tagToggle?.classList.toggle("active", n > 0);
+    }
 
     function matchesQuery(card: HTMLElement, tokens: string[]) {
       if (tokens.length === 0) return true;
@@ -103,6 +140,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       const query = search!.value.trim().toLowerCase();
       const tokens = query.length ? query.split(/\s+/) : [];
       const year = yearSelect!.value;
+      const tags = selectedTags();
 
       let anyVisible = false;
 
@@ -110,7 +148,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
         let groupHasVisible = false;
         group.querySelectorAll<HTMLElement>(".blog-post-card").forEach((card) => {
           const tagList = (card.dataset.tags ?? "").split(",").filter(Boolean);
-          const tagOk = !activeTag || tagList.includes(activeTag);
+          const tagOk = tags.length === 0 || tags.some((t) => tagList.includes(t));
           const yearOk = !year || card.dataset.year === year;
           const queryOk = matchesQuery(card, tokens);
           const visible = tagOk && yearOk && queryOk;
@@ -124,14 +162,54 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       emptyMsg!.style.display = anyVisible ? "none" : "";
     }
 
+    function closePopover() {
+      tagPopover?.setAttribute("hidden", "");
+      tagToggle?.setAttribute("aria-expanded", "false");
+    }
+
+    function openPopover() {
+      tagPopover?.removeAttribute("hidden");
+      tagToggle?.setAttribute("aria-expanded", "true");
+    }
+
     search.addEventListener("input", applyFilters);
     yearSelect.addEventListener("change", applyFilters);
-    tagButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        activeTag = btn.dataset.tag || "";
-        tagButtons.forEach((b) => b.classList.toggle("active", b === btn));
+
+    tagToggle?.addEventListener("click", () => {
+      if (tagPopover?.hasAttribute("hidden")) openPopover();
+      else closePopover();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!tagPopover || tagPopover.hasAttribute("hidden")) return;
+      const target = e.target as Node;
+      if (!tagPopover.contains(target) && target !== tagToggle && !tagToggle?.contains(target)) {
+        closePopover();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closePopover();
+    });
+
+    tagCheckboxes.forEach((cb) => {
+      cb.addEventListener("change", () => {
+        updateTagLabel();
         applyFilters();
       });
+    });
+
+    tagClearBtn?.addEventListener("click", () => {
+      tagCheckboxes.forEach((cb) => (cb.checked = false));
+      updateTagLabel();
+      applyFilters();
+    });
+
+    tagAllBtn?.addEventListener("click", () => {
+      tagCheckboxes.forEach((cb) => (cb.checked = false));
+      updateTagLabel();
+      closePopover();
+      applyFilters();
     });
   }
 

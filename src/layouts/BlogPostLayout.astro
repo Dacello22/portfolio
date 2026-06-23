@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import { r2Url } from "../lib/r2";
+import type { MarkdownHeading } from "astro";
 
 interface Props {
   title: string;
@@ -9,9 +10,20 @@ interface Props {
   updatedDate?: Date;
   tags?: string[];
   heroImage?: string;
+  readingTime?: number;
+  headings?: MarkdownHeading[];
 }
 
-const { title, description, pubDate, updatedDate, tags = [], heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags = [],
+  heroImage,
+  readingTime,
+  headings = [],
+} = Astro.props;
 const heroImageURL = heroImage ? r2Url(heroImage) : undefined;
 
 const dateFmt = (d: Date) =>
@@ -19,12 +31,14 @@ const dateFmt = (d: Date) =>
 ---
 
 <BaseLayout title={title} description={description} image={heroImageURL}>
+  <div class="reading-progress" id="reading-progress"></div>
   <article>
     {heroImageURL && <img src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
     <header class="post-header">
       <p class="muted">
         {dateFmt(pubDate)}
         {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
+        {readingTime && <> &middot; {readingTime} min read</>}
       </p>
       <h1>{title}</h1>
       {tags.length > 0 && (
@@ -33,6 +47,63 @@ const dateFmt = (d: Date) =>
         </p>
       )}
     </header>
+
+    {headings.length > 1 && (
+      <nav class="post-toc" aria-label="Table of contents">
+        <p class="post-toc-title">On this page</p>
+        <ul>
+          {headings.map((h) => (
+            <li class:list={[`post-toc-depth-${h.depth}`]}>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
     <slot />
   </article>
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top" type="button">&uarr;</button>
 </BaseLayout>
+
+<script>
+  function initPostExtras() {
+    const progress = document.getElementById("reading-progress");
+    const backToTop = document.getElementById("back-to-top");
+    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".post-toc a"));
+    if (!progress || progress.dataset.bound === "true") return;
+    progress.dataset.bound = "true";
+
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progress.style.width = `${pct}%`;
+      backToTop?.classList.toggle("visible", window.scrollY > 400);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    if (tocLinks.length) {
+      const headingEls = tocLinks
+        .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+        .filter((el): el is HTMLElement => !!el);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const link = tocLinks.find((a) => `#${entry.target.id}` === a.hash);
+            if (!link) return;
+            link.classList.toggle("active", entry.isIntersecting);
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px" }
+      );
+      headingEls.forEach((el) => observer.observe(el));
+    }
+  }
+
+  document.addEventListener("astro:page-load", initPostExtras);
+</script>

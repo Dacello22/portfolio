@@ -4,7 +4,7 @@ description: "A reference post showing every frontmatter field and markdown feat
 excerpt: "Reference post. Shows every field and formatting trick available when writing a devlog. Not meant for real readers."
 pubDate: 2026-06-23
 updatedDate: 2026-06-24
-heroImage: "devlog/example-post/cover.jpg"
+heroImage: "blog/test-post/Screenshot%202026-03-01%20170747.png"
 tags: ["reference", "formatting", "meta", "example"]
 draft: true
 featured: false
@@ -24,7 +24,7 @@ description: "1-2 sentences. Used for SEO <meta description> and social share ca
 excerpt: "Optional. If set, shown on /blog and the homepage carousel INSTEAD of description."
 pubDate: 2026-06-23
 updatedDate: 2026-06-24 # optional. shows "· updated <date>" next to the date
-heroImage: "[devlog/my-post/cover.jpg](https://pub-fc4d592e868342fcbd981939887afb39.r2.dev/blog/test-post/Screenshot%202026-03-01%20170747.png)" # optional. path inside your R2 bucket
+heroImage: "devlog/my-post/cover.jpg" # optional. path inside your R2 bucket
 tags: ["unreal", "gameplay"] # optional, defaults to []. powers the tag filter on /blog
 draft: true # optional, defaults to false. hides from listings, keeps the page buildable
 featured: false # optional, defaults to false. true adds it to the homepage carousel

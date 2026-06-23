@@ -22,10 +22,12 @@ const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf")
     )}
   </div>
 
+  <hr class="resume-divider" />
+
   <a class="card resume-header resume-header-sm" href={ARTSTATION_URL} target="_blank" rel="noopener">
     <div>
       <p class="resume-name resume-name-sm">ArtStation</p>
-      <p class="muted">Art &amp; portfolio pieces</p>
+      <p class="muted resume-subtext-sm">Art &amp; portfolio pieces</p>
     </div>
     <span class="btn-primary">View Profile</span>
   </a>

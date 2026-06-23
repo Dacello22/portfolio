@@ -529,13 +529,25 @@ code {
   margin: 0;
 }
 
+.resume-divider {
+  margin: 1.75rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
 .resume-header-sm {
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
+  margin-top: 0;
+  padding: 0.6rem 1.1rem;
+}
+
+.resume-subtext-sm {
+  font-size: 0.85rem;
+  margin-top: 0.1rem;
 }
 
 .resume-name-sm {
   font-size: 1.05rem;
+  margin-bottom: 0.1rem;
 }
 
 .btn-primary {

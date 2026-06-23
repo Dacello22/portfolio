@@ -104,9 +104,25 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       </div>
     </section>
   ))}
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top" type="button">&uarr;</button>
 </BaseLayout>
 
 <script>
+  function initBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    if (!backToTop || backToTop.dataset.bound === "true") return;
+    backToTop.dataset.bound = "true";
+
+    const onScroll = () => backToTop.classList.toggle("visible", window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
+
+  document.addEventListener("astro:page-load", initBackToTop);
+
   function initBlogFilters() {
     const search = document.getElementById("blog-search") as HTMLInputElement | null;
     if (!search || search.dataset.bound === "true") return;

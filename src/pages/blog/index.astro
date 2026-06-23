@@ -22,13 +22,16 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   <h1 class="page-title">Blog</h1>
 
   <div class="blog-filters">
-    <input
-      type="search"
-      id="blog-search"
-      class="blog-search-input"
-      placeholder="Search posts… (title, description, tags)"
-      aria-label="Search posts"
-    />
+    <div class="blog-search-wrap">
+      <input
+        type="search"
+        id="blog-search"
+        class="blog-search-input"
+        placeholder="Search posts… (title, description, tags)"
+        aria-label="Search posts"
+      />
+      <kbd class="blog-search-hint" aria-hidden="true">Shift + Enter</kbd>
+    </div>
     <select id="blog-year-filter" class="blog-select" aria-label="Filter by year">
       <option value="">All years</option>
       {years.map((y) => <option value={y}>{y}</option>)}
@@ -194,6 +197,11 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closePopover();
+      if (e.shiftKey && e.key === "Enter") {
+        e.preventDefault();
+        search.focus();
+        search.select();
+      }
     });
 
     tagCheckboxes.forEach((cb) => {

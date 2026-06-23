@@ -509,8 +509,14 @@ body.no-scroll .featured-section:focus-within {
   backdrop-filter: blur(12px);
 }
 
-.blog-search-input {
+.blog-search-wrap {
+  position: relative;
   flex: 1 1 240px;
+}
+
+.blog-search-wrap .blog-search-input {
+  width: 100%;
+  padding-right: 6.5rem;
 }
 
 .blog-search-input::placeholder {
@@ -521,6 +527,28 @@ body.no-scroll .featured-section:focus-within {
 .blog-select:focus {
   outline: none;
   border-color: rgba(245, 158, 11, 0.5);
+}
+
+.blog-search-hint {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-mute);
+  background: rgba(120, 113, 108, 0.1);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.blog-search-input:focus ~ .blog-search-hint,
+.blog-search-input:not(:placeholder-shown) ~ .blog-search-hint {
+  opacity: 0;
 }
 
 /* --- Tag filter popover --------------------------------------------------- */

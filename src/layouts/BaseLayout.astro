@@ -99,20 +99,34 @@ const jsonLd = {
 
     const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
 
-    document.addEventListener("click", (e) => {
-      const link = (e.target as HTMLElement).closest("a");
-      if (!link || !link.closest(".site-header")) return;
+    // Capture phase + stopImmediatePropagation: Astro's ClientRouter
+    // also listens for link clicks on document (bubble phase) and
+    // kicks off its transition/remount independently of whether this
+    // event's default action gets prevented later. Running in the
+    // capture phase means we see the click before that listener does,
+    // and stopping propagation here keeps it from ever reaching Astro
+    // at all — otherwise a same-page click still replayed the full
+    // page transition (visible flash, animations like the hero ring
+    // restarting from scratch).
+    document.addEventListener(
+      "click",
+      (e) => {
+        const link = (e.target as HTMLElement).closest("a");
+        if (!link || !link.closest(".site-header")) return;
 
-      const href = link.getAttribute("href");
-      if (!href || href.startsWith("http") || href.startsWith("#")) return;
+        const href = link.getAttribute("href");
+        if (!href || href.startsWith("http") || href.startsWith("#")) return;
 
-      const targetPath = normalize(new URL(href, location.origin).pathname);
-      const currentPath = normalize(location.pathname);
+        const targetPath = normalize(new URL(href, location.origin).pathname);
+        const currentPath = normalize(location.pathname);
 
-      if (targetPath === currentPath) {
-        e.preventDefault();
-      }
-    });
+        if (targetPath === currentPath) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      },
+      { capture: true }
+    );
   }
 
   document.addEventListener("astro:page-load", initNavGuard);

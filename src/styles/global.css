@@ -54,6 +54,16 @@ html {
      change or reader heuristics. We size everything intentionally. */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Hide the page scrollbar. Scrolling still works, and on posts the
+     top progress bar already shows position. Inner overflow areas
+     (code blocks, tables) keep their own scrollbars since this only
+     targets the root element. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -670,8 +680,8 @@ body.no-scroll .featured-section {
 
 .post-header-image {
   flex-shrink: 0;
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
   border-radius: 0.75rem;
   object-fit: cover;
   margin: 0;
@@ -1130,8 +1140,8 @@ body.no-scroll .featured-section {
   }
 
   .post-header-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
 }
 

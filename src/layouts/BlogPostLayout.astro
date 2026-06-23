@@ -50,7 +50,6 @@ const dateFmt = (d: Date) =>
 
   <article>
     <header class="post-header" class:list={[{ "post-header-with-image": heroImageURL }]}>
-      {heroImageURL && <img class="post-header-image" src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
       <div class="post-header-text">
         <p class="muted">
           {dateFmt(pubDate)}
@@ -64,6 +63,7 @@ const dateFmt = (d: Date) =>
           </p>
         )}
       </div>
+      {heroImageURL && <img class="post-header-image" src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
     </header>
 
     <div class="post-content">
@@ -74,6 +74,8 @@ const dateFmt = (d: Date) =>
 </BaseLayout>
 
 <script>
+  type TocItem = { link: HTMLAnchorElement; el: HTMLElement };
+
   function initPostExtras() {
     const progress = document.getElementById("reading-progress");
     const backToTop = document.getElementById("back-to-top");
@@ -81,34 +83,71 @@ const dateFmt = (d: Date) =>
     if (!progress || progress.dataset.bound === "true") return;
     progress.dataset.bound = "true";
 
+    // How far below the viewport top a heading should land. Clears the
+    // sticky header and gives a little breathing room, and it's the
+    // exact same number used for click-scroll and scrollspy so the
+    // active item always matches where a click lands.
+    const SCROLL_OFFSET = 90;
+
+    const items: TocItem[] = tocLinks
+      .map((link): TocItem | null => {
+        const id = decodeURIComponent(link.hash.slice(1));
+        const el = document.getElementById(id);
+        return el ? { link, el } : null;
+      })
+      .filter((it): it is TocItem => it !== null);
+
+    let activeLink: HTMLAnchorElement | null = null;
+    const setActive = (link: HTMLAnchorElement | null) => {
+      if (link === activeLink) return;
+      activeLink?.classList.remove("active");
+      link?.classList.add("active");
+      activeLink = link;
+    };
+
+    // Current section = the last heading whose top has scrolled above
+    // the offset line. It stays highlighted across the whole section,
+    // not just while the heading itself is near the top.
+    const updateSpy = () => {
+      let current: HTMLAnchorElement | null = null;
+      for (const it of items) {
+        if (it.el.getBoundingClientRect().top - SCROLL_OFFSET <= 1) current = it.link;
+        else break;
+      }
+      setActive(current);
+    };
+
+    // While a click-initiated smooth scroll is animating, freeze the
+    // spy so it doesn't flicker through intermediate headings on the
+    // way to the target.
+    let suppressSpyUntil = 0;
+    let ticking = false;
     const onScroll = () => {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - doc.clientHeight;
-      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      progress.style.width = `${pct}%`;
-      backToTop?.classList.toggle("visible", window.scrollY > 400);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - doc.clientHeight;
+        progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+        backToTop?.classList.toggle("visible", window.scrollY > 400);
+        if (items.length && Date.now() >= suppressSpyUntil) updateSpy();
+        ticking = false;
+      });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
     backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-    if (tocLinks.length) {
-      const headingEls = tocLinks
-        .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
-        .filter((el): el is HTMLElement => !!el);
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const link = tocLinks.find((a) => `#${entry.target.id}` === a.hash);
-            if (!link) return;
-            link.classList.toggle("active", entry.isIntersecting);
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px" }
-      );
-      headingEls.forEach((el) => observer.observe(el));
+    for (const it of items) {
+      it.link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const top = it.el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+        suppressSpyUntil = Date.now() + 700;
+        setActive(it.link);
+        window.scrollTo({ top, behavior: "smooth" });
+        history.replaceState(null, "", it.link.hash);
+      });
     }
   }
 

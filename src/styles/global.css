@@ -390,67 +390,34 @@ code {
   margin-top: 1rem;
 }
 
-/* Docked to the bottom of the no-scroll homepage as a collapsed
-   peek strip — name/role stay the focus. Expands on hover/focus so
-   it never competes with the hero for space, even at small window
-   sizes or browser zoom. Touch devices (no hover) get it expanded
-   via the @media(hover:none) fallback below. */
+/* Docked at the bottom of the no-scroll homepage, sitting directly on
+   the black background — no panel. The hero fills the space above it
+   and the cards stay horizontally scrollable. */
 body.no-scroll .featured-section {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  flex: 0 0 auto;
   margin-top: 0;
-  height: 60px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px) saturate(140%);
-  -webkit-backdrop-filter: blur(8px) saturate(140%);
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
-  transition: height 0.25s ease;
-}
-
-body.no-scroll .featured-section:hover,
-body.no-scroll .featured-section:focus-within {
-  height: min(46vh, 380px);
-}
-
-@media (hover: none) {
-  body.no-scroll .featured-section {
-    height: min(46vh, 380px);
-  }
+  padding-bottom: 0.5rem;
 }
 
 .featured-inner {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0.9rem 1.5rem;
+  padding: 0.4rem 1.5rem 0;
 }
 
 .featured-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
-}
-
-.view-all-link {
-  display: block;
-  width: fit-content;
-  margin: 1rem auto 0.5rem;
-  color: var(--text-dim);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  font-size: 0.9rem;
-}
-
-.view-all-link:hover {
-  color: var(--accent-soft);
 }
 
 .featured-header h2 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
 }
 
 .carousel {

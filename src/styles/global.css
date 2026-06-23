@@ -70,6 +70,7 @@ body.no-scroll {
 }
 
 body.no-scroll main {
+  position: relative;
   flex: 1;
   width: 100%;
   display: flex;
@@ -325,23 +326,42 @@ code {
   margin-top: 1rem;
 }
 
-/* Docked to the bottom of the no-scroll homepage. Translucent grey
-   panel (not black, not amber) so it reads as a distinct shelf
-   sitting in front of the pure-black backdrop above it. */
+/* Docked to the bottom of the no-scroll homepage as a collapsed
+   peek strip — name/role stay the focus. Expands on hover/focus so
+   it never competes with the hero for space, even at small window
+   sizes or browser zoom. Touch devices (no hover) get it expanded
+   via the @media(hover:none) fallback below. */
 body.no-scroll .featured-section {
-  flex: 0 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin-top: 0;
+  height: 60px;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(190, 190, 200, 0.14), rgba(190, 190, 200, 0.22));
   backdrop-filter: blur(22px) saturate(120%);
   -webkit-backdrop-filter: blur(22px) saturate(120%);
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: height 0.25s ease;
+}
+
+body.no-scroll .featured-section:hover,
+body.no-scroll .featured-section:focus-within {
+  height: min(46vh, 380px);
+}
+
+@media (hover: none) {
+  body.no-scroll .featured-section {
+    height: min(46vh, 380px);
+  }
 }
 
 .featured-inner {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0.9rem 1.5rem;
 }
 
 .featured-header {
@@ -349,6 +369,11 @@ body.no-scroll .featured-section {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.featured-header h2 {
+  margin: 0;
+  font-size: 1rem;
 }
 
 .view-all-btn {

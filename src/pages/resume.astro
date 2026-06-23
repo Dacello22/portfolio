@@ -1,14 +1,36 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { AUTHOR, ROLE, SKILLS } from "../consts";
+
+const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf"));
 ---
 
-<BaseLayout title="Resume" description="William Lunsford's resume">
+<BaseLayout title="Resume" description={`${AUTHOR}'s resume`}>
   <h1>Resume</h1>
-  <p>
-    <a href="/resume.pdf" download>Download PDF</a>
-  </p>
-  <p class="muted">
-    Drop your resume PDF in <code>public/resume.pdf</code> to make the link above work,
-    or replace this page with rendered HTML content.
-  </p>
+
+  <div class="card resume-header">
+    <div>
+      <p class="resume-name">{AUTHOR}</p>
+      <p class="muted">{ROLE}</p>
+    </div>
+    {hasResume ? (
+      <a class="btn-primary" href="/resume.pdf" download>Download PDF</a>
+    ) : (
+      <span class="btn-primary disabled">PDF coming soon</span>
+    )}
+  </div>
+
+  <h2 style="margin-top: 2.5rem;">Skills</h2>
+  <div class="skill-groups">
+    {SKILLS.map((group) => (
+      <div class="card skill-group">
+        <p class="skill-category">{group.category}</p>
+        <div class="skill-pills">
+          {group.items.map((item) => <span class="tag">{item}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
 </BaseLayout>

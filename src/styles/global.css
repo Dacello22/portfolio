@@ -350,18 +350,25 @@ code {
 }
 
 .view-all-btn {
-  display: none;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--text);
   background: rgba(148, 163, 184, 0.08);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: 999px;
-  padding: 0.5rem 1.1rem;
   backdrop-filter: blur(12px);
+  overflow: hidden;
+  opacity: 0;
+  max-width: 0;
+  padding: 0.5rem 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, max-width 0.3s ease, padding 0.3s ease, border-color 0.25s ease;
 }
 
 .view-all-btn:hover {
@@ -371,10 +378,16 @@ code {
   background: rgba(96, 165, 250, 0.12);
 }
 
+/* Pure CSS, no JS/resize listener: the browser interpolates this
+   continuously as the viewport crosses the breakpoint, so it can't
+   desync or get stuck mid-state no matter how fast you resize. */
 @media (min-width: 900px) {
   .view-all-btn {
-    display: inline-flex;
-    align-items: center;
+    opacity: 1;
+    max-width: 160px;
+    padding: 0.5rem 1.1rem;
+    border-color: var(--border);
+    pointer-events: auto;
   }
 }
 
@@ -497,4 +510,124 @@ code {
 
 .card-tags {
   margin-top: 0.75rem;
+}
+
+/* --- Resume ---------------------------------------------------------------- */
+.resume-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.resume-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.35), rgba(96, 165, 250, 0.12));
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  backdrop-filter: blur(12px);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 24px rgba(96, 165, 250, 0.25);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn-primary.disabled {
+  color: var(--text-mute);
+  background: rgba(148, 163, 184, 0.08);
+  border-color: var(--border);
+  cursor: default;
+  pointer-events: none;
+}
+
+.skill-groups {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.skill-category {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 0 0 0.75rem;
+}
+
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-pills .tag {
+  margin-right: 0;
+}
+
+/* --- Contact ---------------------------------------------------------------- */
+.contact-grid {
+  margin-top: 1.5rem;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--accent-soft);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.contact-icon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.contact-card:hover .contact-icon {
+  background: rgba(96, 165, 250, 0.22);
+  color: #fff;
+}
+
+.contact-label {
+  display: block;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.contact-handle {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+  word-break: break-all;
 }

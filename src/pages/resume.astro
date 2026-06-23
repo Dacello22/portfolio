@@ -2,9 +2,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { AUTHOR, ROLE, ARTSTATION_URL } from "../consts";
+import { AUTHOR, ROLE, ARTSTATION_URL, SOCIALS } from "../consts";
 
 const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf"));
+
+const github = SOCIALS.find((s) => s.label === "GitHub");
+const youtube = SOCIALS.find((s) => s.label === "YouTube");
 ---
 
 <BaseLayout title="Resume" description={`${AUTHOR}'s resume`}>
@@ -24,11 +27,33 @@ const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf")
 
   <hr class="resume-divider" />
 
-  <a class="card resume-header resume-header-sm" href={ARTSTATION_URL} target="_blank" rel="noopener">
-    <div>
-      <p class="resume-name resume-name-sm">ArtStation</p>
-      <p class="muted resume-subtext-sm">Art &amp; portfolio pieces</p>
-    </div>
-    <span class="btn-primary">View Profile</span>
-  </a>
+  <div class="resume-links-group">
+    <a class="card resume-header resume-header-sm" href={ARTSTATION_URL} target="_blank" rel="noopener">
+      <div>
+        <p class="resume-name resume-name-sm">ArtStation</p>
+        <p class="muted resume-subtext-sm">Art &amp; portfolio pieces</p>
+      </div>
+      <span class="btn-primary">View Profile</span>
+    </a>
+
+    {github && (
+      <a class="card resume-header resume-header-sm" href={github.href} target="_blank" rel="noopener">
+        <div>
+          <p class="resume-name resume-name-sm">GitHub</p>
+          <p class="muted resume-subtext-sm">Code &amp; repos — {github.handle}</p>
+        </div>
+        <span class="btn-primary">View Profile</span>
+      </a>
+    )}
+
+    {youtube && (
+      <a class="card resume-header resume-header-sm" href={youtube.href} target="_blank" rel="noopener">
+        <div>
+          <p class="resume-name resume-name-sm">YouTube</p>
+          <p class="muted resume-subtext-sm">Devlogs &amp; gameplay — {youtube.handle}</p>
+        </div>
+        <span class="btn-primary">View Profile</span>
+      </a>
+    )}
+  </div>
 </BaseLayout>

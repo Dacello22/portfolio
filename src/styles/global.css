@@ -288,8 +288,8 @@ code {
   /* Square box — equal width/height so an equal rx/ry below produces
      an actual circle, not an ellipse stretched by the box's own
      aspect ratio. */
-  width: min(90vw, 65vh, 680px);
-  height: min(90vw, 65vh, 680px);
+  width: min(95vw, 78vh, 820px);
+  height: min(95vw, 78vh, 820px);
   transform: translate(-50%, -50%);
   z-index: 0;
   pointer-events: none;

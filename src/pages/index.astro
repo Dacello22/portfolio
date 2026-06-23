@@ -19,8 +19,8 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   const angleDeg = (angle * 180) / Math.PI;
   const cx = 50;
   const cy = 50;
-  const rx = 38;
-  const ry = 58;
+  const rx = 42; // base 38, scaled up ~10%
+  const ry = 73; // base 58 -> stretched to 66 vertically, then scaled up ~10%
   const big = i % 3 === 0;
   return {
     x: cx + rx * Math.cos(angle),
@@ -55,7 +55,6 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
     <div class="featured-inner">
       <div class="featured-header">
         <h2>Featured Posts</h2>
-        <a class="view-all-btn" href="/blog">View All</a>
       </div>
       <div class="carousel" id="featured-carousel">
         <div class="carousel-track">

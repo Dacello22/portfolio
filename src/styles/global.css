@@ -660,32 +660,22 @@ body.no-scroll .featured-section:focus-within .featured-expand-arrow {
   transition: width 0.1s linear;
 }
 
-.post-layout {
-  display: flex;
-  flex-direction: column;
-}
-
+/* The TOC is fixed/out-of-flow on purpose: it must never shift or
+   resize the centered article column. Below 1440px there isn't
+   enough gutter beside the 960px container to fit it without
+   overlapping content, so it's simply hidden rather than reflowing
+   anything. */
 .post-toc-wrap {
-  order: -1;
-  margin-bottom: 1.5rem;
+  display: none;
 }
 
-@media (min-width: 900px) {
-  .post-layout {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 2.5rem;
-    align-items: start;
-  }
-
+@media (min-width: 1440px) {
   .post-toc-wrap {
-    order: -1;
-    margin-bottom: 0;
-  }
-
-  .post-toc {
-    position: sticky;
+    display: block;
+    position: fixed;
     top: 90px;
+    left: calc((100vw - 960px) / 2 - 240px);
+    width: 220px;
   }
 }
 

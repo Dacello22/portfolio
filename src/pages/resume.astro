@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { AUTHOR, ROLE, SKILLS } from "../consts";
+import { AUTHOR, ROLE, ARTSTATION_URL } from "../consts";
 
 const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf"));
 ---
@@ -22,15 +22,11 @@ const hasResume = fs.existsSync(path.join(process.cwd(), "public", "resume.pdf")
     )}
   </div>
 
-  <h2 style="margin-top: 2.5rem;">Skills</h2>
-  <div class="skill-groups">
-    {SKILLS.map((group) => (
-      <div class="card skill-group">
-        <p class="skill-category">{group.category}</p>
-        <div class="skill-pills">
-          {group.items.map((item) => <span class="tag">{item}</span>)}
-        </div>
-      </div>
-    ))}
-  </div>
+  <a class="card resume-header resume-header-sm" href={ARTSTATION_URL} target="_blank" rel="noopener">
+    <div>
+      <p class="resume-name resume-name-sm">ArtStation</p>
+      <p class="muted">Art &amp; portfolio pieces</p>
+    </div>
+    <span class="btn-primary">View Profile</span>
+  </a>
 </BaseLayout>

@@ -3,6 +3,8 @@ export const SITE_DESCRIPTION = "William Lunsford — Game Developer";
 export const SITE_URL = "https://portfolio.williamlunsford02.workers.dev";
 export const AUTHOR = "William Lunsford";
 export const ROLE = "Gameplay Programmer";
+// TODO: swap in real ArtStation profile URL
+export const ARTSTATION_URL = "https://www.artstation.com/yourname";
 
 export const SOCIALS = [
   { label: "Email", href: "mailto:williamlunsford02@gmail.com", handle: "williamlunsford02@gmail.com" },

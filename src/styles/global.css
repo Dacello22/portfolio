@@ -529,6 +529,15 @@ code {
   margin: 0;
 }
 
+.resume-header-sm {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.resume-name-sm {
+  font-size: 1.05rem;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -558,31 +567,6 @@ code {
   border-color: var(--border);
   cursor: default;
   pointer-events: none;
-}
-
-.skill-groups {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  margin-top: 1.25rem;
-}
-
-.skill-category {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-mute);
-  margin: 0 0 0.75rem;
-}
-
-.skill-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.skill-pills .tag {
-  margin-right: 0;
 }
 
 /* --- Contact ---------------------------------------------------------------- */

@@ -6,6 +6,6 @@ import sitemap from "@astrojs/sitemap";
 // or your custom domain. This value is required for the sitemap to emit
 // correct absolute URLs.
 export default defineConfig({
-  site: "https://portfolio.example.workers.dev",
+  site: "https://portfolio.williamlunsford02.workers.dev",
   integrations: [sitemap()],
 });

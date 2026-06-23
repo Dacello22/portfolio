@@ -6,11 +6,13 @@ import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, AUTHOR, ROLE, SOCIALS } from ".
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = SITE_DESCRIPTION } = Astro.props;
+const { title, description = SITE_DESCRIPTION, image } = Astro.props;
 const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
+const imageURL = image ? new URL(image, SITE_URL).toString() : undefined;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -37,14 +39,41 @@ const jsonLd = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta name="twitter:card" content="summary" />
+    {imageURL && <meta property="og:image" content={imageURL} />}
+    <meta name="twitter:card" content={imageURL ? "summary_large_image" : "summary"} />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    {imageURL && <meta name="twitter:image" content={imageURL} />}
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
     <ClientRouter />
   </head>
   <body>
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true">
+      <defs>
+        <symbol id="cyber-star" viewBox="0 0 24 24">
+          <path d="M22,12 13.556,13.556 12,22 10.444,13.556 2,12 10.444,10.444 12,2 13.556,10.444Z" />
+        </symbol>
+        <symbol id="cyber-sigil" viewBox="0 0 200 200">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="100" cy="100" r="70" />
+            <circle cx="100" cy="100" r="50" stroke-dasharray="2 6" />
+            <ellipse cx="100" cy="100" rx="85" ry="26" transform="rotate(45 100 100)" />
+            <ellipse cx="100" cy="100" rx="85" ry="26" transform="rotate(-45 100 100)" />
+            <g stroke-width="1.2">
+              <line x1="100" y1="14" x2="100" y2="26" />
+              <line x1="100" y1="174" x2="100" y2="186" />
+              <line x1="14" y1="100" x2="26" y2="100" />
+              <line x1="174" y1="100" x2="186" y2="100" />
+              <line x1="41" y1="41" x2="50" y2="50" />
+              <line x1="159" y1="41" x2="150" y2="50" />
+              <line x1="41" y1="159" x2="50" y2="150" />
+              <line x1="159" y1="159" x2="150" y2="150" />
+            </g>
+          </g>
+        </symbol>
+      </defs>
+    </svg>
     <header class="site-header">
       <div class="container">
         <nav>

@@ -12,24 +12,27 @@ interface Props {
 }
 
 const { title, description, pubDate, updatedDate, tags = [], heroImage } = Astro.props;
+const heroImageURL = heroImage ? r2Url(heroImage) : undefined;
 
 const dateFmt = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={heroImageURL}>
   <article>
-    {heroImage && <img src={r2Url(heroImage)} alt={title} loading="lazy" decoding="async" />}
-    <p class="muted" style="margin-top: 1rem;">
-      {dateFmt(pubDate)}
-      {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
-    </p>
-    <h1>{title}</h1>
-    {tags.length > 0 && (
-      <p>
-        {tags.map((t) => <span class="tag">{t}</span>)}
+    {heroImageURL && <img src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
+    <header class="post-header">
+      <p class="muted">
+        {dateFmt(pubDate)}
+        {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
       </p>
-    )}
+      <h1>{title}</h1>
+      {tags.length > 0 && (
+        <p class="card-tags">
+          {tags.map((t) => <span class="tag">{t}</span>)}
+        </p>
+      )}
+    </header>
     <slot />
   </article>
 </BaseLayout>

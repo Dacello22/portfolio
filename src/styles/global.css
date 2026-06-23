@@ -262,6 +262,42 @@ code {
   padding: 1.5rem;
   transform: scale(0.8);
   overflow: hidden;
+  --mx: 50%;
+  --my: 50%;
+}
+
+/* Cyber-sigilism streaks: hidden almost entirely in the dark, an
+   amber glow tied to the mouse "lights up" the same shapes within a
+   small radius. Three stacked layers: faint static streaks, the
+   glow itself, then a bright copy of the streaks masked to the
+   glow's radius so only the lit patch reveals crisp detail. */
+.sigil-streaks,
+.sigil-streaks-bright,
+.sigil-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sigil-streaks {
+  color: rgba(255, 255, 255, 0.05);
+}
+
+.sigil-streaks-bright {
+  color: rgba(245, 158, 11, 0.6);
+  -webkit-mask-image: radial-gradient(circle 200px at var(--mx) var(--my), black, transparent 75%);
+  mask-image: radial-gradient(circle 200px at var(--mx) var(--my), black, transparent 75%);
+}
+
+.sigil-streaks svg,
+.sigil-streaks-bright svg {
+  position: absolute;
+  overflow: visible;
+}
+
+.sigil-glow {
+  background: radial-gradient(circle 260px at var(--mx) var(--my), rgba(245, 158, 11, 0.16), transparent 70%);
 }
 
 .hero-backdrop {

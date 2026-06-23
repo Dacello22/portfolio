@@ -30,10 +30,53 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
     rotate: Math.round(angleDeg - 90),
   };
 });
+
+// Cyber-sigilism crack streaks: irregular spiky bursts, like jagged
+// veins/cracks. Hidden almost entirely in the dark backdrop; an
+// amber glow follows the mouse and "lights up" the same shapes
+// within a small radius (see .sigil-streaks-bright + the mask in
+// global.css). Same shapes are rendered twice — once faint/static,
+// once bright/masked — so the reveal lines up exactly.
+function buildStreakPath() {
+  const spikes = 7 + Math.floor(Math.random() * 4);
+  const points: string[] = [];
+  for (let i = 0; i < spikes; i++) {
+    const angle = (i / spikes) * Math.PI * 2 + (Math.random() - 0.5) * 0.35;
+    const outerR = 55 + Math.random() * 130;
+    const innerR = 8 + Math.random() * 16;
+    const innerAngle = angle + Math.PI / spikes;
+    points.push(`${(Math.cos(angle) * outerR).toFixed(1)},${(Math.sin(angle) * outerR).toFixed(1)}`);
+    points.push(`${(Math.cos(innerAngle) * innerR).toFixed(1)},${(Math.sin(innerAngle) * innerR).toFixed(1)}`);
+  }
+  return `M${points.join(" L")} Z`;
+}
+
+const streakShapes = [
+  { x: 18, y: 30, scale: 1.1, rotate: 10 },
+  { x: 78, y: 22, scale: 0.85, rotate: 140 },
+  { x: 85, y: 72, scale: 1.3, rotate: 60 },
+  { x: 12, y: 75, scale: 0.95, rotate: 250 },
+  { x: 50, y: 88, scale: 0.7, rotate: 300 },
+].map((s) => ({ ...s, path: buildStreakPath() }));
 ---
 
 <BaseLayout title={AUTHOR} noScroll>
-  <section class="hero full-bleed">
+  <section class="hero full-bleed" id="hero">
+    <div class="sigil-streaks" aria-hidden="true">
+      {streakShapes.map((s) => (
+        <svg viewBox="-200 -200 400 400" style={`left:${s.x}%; top:${s.y}%; width:${340 * s.scale}px; height:${340 * s.scale}px; transform:translate(-50%,-50%) rotate(${s.rotate}deg);`}>
+          <path d={s.path} fill="currentColor" />
+        </svg>
+      ))}
+    </div>
+    <div class="sigil-glow" aria-hidden="true"></div>
+    <div class="sigil-streaks-bright" aria-hidden="true">
+      {streakShapes.map((s) => (
+        <svg viewBox="-200 -200 400 400" style={`left:${s.x}%; top:${s.y}%; width:${340 * s.scale}px; height:${340 * s.scale}px; transform:translate(-50%,-50%) rotate(${s.rotate}deg);`}>
+          <path d={s.path} fill="currentColor" />
+        </svg>
+      ))}
+    </div>
     <div class="hero-backdrop" aria-hidden="true">
       {ringStars.map((s) => (
         <svg
@@ -153,4 +196,19 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   }
 
   document.addEventListener("astro:page-load", initFeaturedCarousel);
+
+  function initSigilGlow() {
+    const hero = document.getElementById("hero");
+    if (!hero || hero.dataset.glowBound === "true") return;
+    hero.dataset.glowBound = "true";
+
+    const onMove = (e: PointerEvent) => {
+      const rect = hero.getBoundingClientRect();
+      hero.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      hero.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    hero.addEventListener("pointermove", onMove);
+  }
+
+  document.addEventListener("astro:page-load", initSigilGlow);
 </script>

@@ -14,6 +14,7 @@ export const SOCIALS = [
     handle: "/in/william-lunsford-10ab66418",
   },
   { label: "GitHub", href: "https://github.com/Dacello22", handle: "@Dacello22" },
+  { label: "X", href: "https://x.com/Dacello02", handle: "@Dacello02" },
 ];
 
 export const SKILLS = [

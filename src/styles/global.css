@@ -646,18 +646,20 @@ body.no-scroll .featured-section {
 
 /* --- Blog post header ------------------------------------------------------ */
 .post-header {
-  background: #fdf8f0;
-  color: #44403c;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--border);
   border-radius: 1rem;
-  padding: 1.5rem 1.75rem;
-  margin: 0 0 2rem;
+  padding: 1.6rem 1.75rem;
+  margin: 0 0 2.5rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .post-header-with-image {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem 1.75rem;
+  padding: 1.4rem 1.75rem;
 }
 
 .post-header-image {
@@ -674,19 +676,15 @@ body.no-scroll .featured-section {
   min-width: 0;
 }
 
-.post-header .muted {
-  color: #78716c;
-}
-
 .post-header h1 {
-  color: #1c1917;
-  margin: 0.4rem 0 0;
+  color: var(--text);
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  line-height: 1.2;
 }
 
-.post-header .tag {
-  color: #92400e;
-  background: rgba(180, 83, 9, 0.08);
-  border-color: rgba(180, 83, 9, 0.3);
+.post-header .card-tags {
+  margin-top: 0.85rem;
 }
 
 /* --- Rendered post body typography ---------------------------------------- */

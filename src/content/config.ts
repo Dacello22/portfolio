@@ -5,6 +5,10 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    // Short blurb shown on the /blog list page. Falls back to
+    // `description` if omitted — only set this when you want the
+    // list-page text to read differently from the SEO/share text.
+    excerpt: z.string().optional(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),

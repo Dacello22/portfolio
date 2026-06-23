@@ -87,3 +87,33 @@ const jsonLd = {
     </main>
   </body>
 </html>
+
+<script>
+  // Clicking a nav link for the page you're already on still made
+  // Astro re-run the transition/page-load lifecycle for no reason —
+  // skip the navigation entirely when the link points at the current
+  // page.
+  function initNavGuard() {
+    if (document.body.dataset.navGuardBound === "true") return;
+    document.body.dataset.navGuardBound = "true";
+
+    const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
+
+    document.addEventListener("click", (e) => {
+      const link = (e.target as HTMLElement).closest("a");
+      if (!link || !link.closest(".site-header")) return;
+
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("http") || href.startsWith("#")) return;
+
+      const targetPath = normalize(new URL(href, location.origin).pathname);
+      const currentPath = normalize(location.pathname);
+
+      if (targetPath === currentPath) {
+        e.preventDefault();
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initNavGuard);
+</script>

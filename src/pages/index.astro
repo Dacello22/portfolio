@@ -19,13 +19,13 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   const angleDeg = (angle * 180) / Math.PI;
   const cx = 50;
   const cy = 50;
-  const rx = 46;
-  const ry = 48;
+  const rx = 38;
+  const ry = 58;
   const big = i % 3 === 0;
   return {
     x: cx + rx * Math.cos(angle),
     y: cy + ry * Math.sin(angle),
-    size: big ? 22 + (i % 5) : 14 + (i % 5),
+    size: big ? 30 + (i % 6) : 20 + (i % 6),
     opacity: big ? 0.95 : 0.7,
     rotate: Math.round(angleDeg - 90),
   };

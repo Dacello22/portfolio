@@ -33,25 +33,7 @@ const dateFmt = (d: Date) =>
 <BaseLayout title={title} description={description} image={heroImageURL}>
   <div class="reading-progress" id="reading-progress"></div>
   <article>
-    {heroImageURL && <img src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
-    <header class="post-header">
-      <p class="muted">
-        {dateFmt(pubDate)}
-        {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
-        {readingTime && <> &middot; {readingTime} min read</>}
-      </p>
-      <h1>{title}</h1>
-      {tags.length > 0 && (
-        <p class="card-tags">
-          {tags.map((t) => <span class="tag">{t}</span>)}
-        </p>
-      )}
-    </header>
-
     <div class="post-layout">
-      <div class="post-content">
-        <slot />
-      </div>
       {headings.length > 1 && (
         <aside class="post-toc-wrap">
           <nav class="post-toc" aria-label="Table of contents">
@@ -66,6 +48,29 @@ const dateFmt = (d: Date) =>
           </nav>
         </aside>
       )}
+
+      <div class="post-main">
+        <header class="post-header" class:list={[{ "post-header-with-image": heroImageURL }]}>
+          {heroImageURL && <img class="post-header-image" src={heroImageURL} alt={title} loading="lazy" decoding="async" />}
+          <div class="post-header-text">
+            <p class="muted">
+              {dateFmt(pubDate)}
+              {updatedDate && <> &middot; updated {dateFmt(updatedDate)}</>}
+              {readingTime && <> &middot; {readingTime} min read</>}
+            </p>
+            <h1>{title}</h1>
+            {tags.length > 0 && (
+              <p class="card-tags">
+                {tags.map((t) => <span class="tag">{t}</span>)}
+              </p>
+            )}
+          </div>
+        </header>
+
+        <div class="post-content">
+          <slot />
+        </div>
+      </div>
     </div>
   </article>
   <button class="back-to-top" id="back-to-top" aria-label="Back to top" type="button">&uarr;</button>

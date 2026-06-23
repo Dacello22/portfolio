@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { r2Url } from "../../lib/r2";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -82,11 +83,14 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
             data-tags={post.data.tags.join(",").toLowerCase()}
             data-year={post.data.pubDate.getFullYear()}
           >
+            {post.data.heroImage && (
+              <img src={r2Url(post.data.heroImage)} alt={post.data.title} loading="lazy" decoding="async" />
+            )}
             <p class="muted">
               {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </p>
             <h3>{post.data.title}</h3>
-            <p class="muted">{post.data.description}</p>
+            <p class="muted">{post.data.excerpt ?? post.data.description}</p>
             {post.data.tags.length > 0 && (
               <p class="card-tags">
                 {post.data.tags.map((t) => <span class="tag">{t}</span>)}

@@ -609,7 +609,28 @@ body.no-scroll .featured-section:focus-within .featured-expand-arrow {
   color: #44403c;
   border-radius: 1rem;
   padding: 1.5rem 1.75rem;
-  margin: 1.5rem 0 2rem;
+  margin: 0 0 2rem;
+}
+
+.post-header-with-image {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.75rem;
+}
+
+.post-header-image {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  margin: 0;
+}
+
+.post-header-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .post-header .muted {

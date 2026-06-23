@@ -9,43 +9,28 @@ const featuredPosts = (await getCollection("blog", ({ data }) => !data.draft && 
 
 const PLACEHOLDER_SLOTS = Math.max(0, 3 - featuredPosts.length);
 
-// Semi-ring of sharp stars arching over the hero name, like the
-// reference art's star-crown behind the title. Upper half of an
-// ellipse: angle 180deg (left) -> 270deg (top) -> 360deg (right).
-const arcStars = Array.from({ length: 9 }, (_, i) => {
-  const t = i / 8;
-  const angleDeg = 180 + t * 180;
-  const angle = (angleDeg * Math.PI) / 180;
+// Full ring of sharp stars encircling the name, sized to the text
+// block rather than scattered across the page.
+const ringStars = Array.from({ length: 14 }, (_, i) => {
+  const angle = (i / 14) * Math.PI * 2;
   const cx = 50;
-  const cy = 38;
-  const rx = 42;
-  const ry = 30;
-  const bell = Math.sin(t * Math.PI); // 0 at edges, 1 at top-center
+  const cy = 50;
+  const rx = 46;
+  const ry = 48;
   return {
     x: cx + rx * Math.cos(angle),
     y: cy + ry * Math.sin(angle),
-    size: 8 + bell * 16,
-    opacity: 0.3 + bell * 0.55,
-    glow: bell > 0.55,
+    size: 7 + (i % 3) * 4,
+    opacity: 0.45 + (i % 3) * 0.15,
+    glow: i % 3 === 2,
   };
 });
-
-// Two faint vertical light columns flanking the hero, echoing the
-// beam-like streaks in the reference image.
-const sideBeams = [8, 92].flatMap((x) =>
-  Array.from({ length: 5 }, (_, i) => {
-    const y = 16 + i * 16;
-    const bell = Math.sin((i / 4) * Math.PI);
-    return { x, y, size: 5 + bell * 6, opacity: 0.2 + bell * 0.3 };
-  })
-);
 ---
 
-<BaseLayout title={AUTHOR}>
+<BaseLayout title={AUTHOR} noScroll>
   <section class="hero full-bleed">
     <div class="hero-backdrop" aria-hidden="true">
-      <svg class="hero-sigil"><use href="#cyber-sigil" /></svg>
-      {arcStars.map((s) => (
+      {ringStars.map((s) => (
         <svg
           class="hero-star"
           class:list={[{ "hero-star-glow": s.glow }]}
@@ -54,20 +39,10 @@ const sideBeams = [8, 92].flatMap((x) =>
           <use href="#cyber-star" />
         </svg>
       ))}
-      {sideBeams.map((s) => (
-        <svg
-          class="hero-star"
-          style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; opacity:${s.opacity};`}
-        >
-          <use href="#cyber-star" />
-        </svg>
-      ))}
     </div>
     <div class="hero-inner">
-      <p class="hero-eyebrow">Game Developer Portfolio</p>
       <h1 class="hero-name">{AUTHOR}</h1>
       <p class="hero-role">{ROLE}</p>
-      <p class="hero-bio">Building things, breaking things, writing about both.</p>
     </div>
   </section>
 

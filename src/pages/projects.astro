@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+---
+
+<BaseLayout title="Projects" description="Games and projects by William Lunsford">
+  <h1>Projects</h1>
+  <div class="grid">
+    {projects.map((p) => (
+      <div class="card">
+        {p.image && <img src={p.image} alt={p.title} />}
+        <h3>{p.title}</h3>
+        <p class="muted">{p.description}</p>
+        <p>
+          {p.tags.map((t) => <span class="tag">{t}</span>)}
+        </p>
+        {p.link && <a href={p.link}>View &rarr;</a>}
+      </div>
+    ))}
+  </div>
+</BaseLayout>

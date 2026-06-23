@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+
+const featured = projects.slice(0, 3);
+---
+
+<BaseLayout title="William Lunsford">
+  <section>
+    <h1>William Lunsford</h1>
+    <p class="muted">Game developer. Building things, breaking things, writing about both.</p>
+  </section>
+
+  <section style="margin-top: 2.5rem;">
+    <h2>Featured Projects</h2>
+    <div class="grid">
+      {featured.map((p) => (
+        <div class="card">
+          <h3>{p.title}</h3>
+          <p class="muted">{p.description}</p>
+          <p>
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </p>
+          {p.link && <a href={p.link}>View &rarr;</a>}
+        </div>
+      ))}
+    </div>
+    <p style="margin-top: 1rem;"><a href="/projects">See all projects &rarr;</a></p>
+  </section>
+</BaseLayout>

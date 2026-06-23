@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const links = [
+  { label: "Email", href: "mailto:you@example.com" },
+  { label: "itch.io", href: "https://yourname.itch.io" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/yourname" },
+  { label: "GitHub", href: "https://github.com/Dacello22" },
+];
+---
+
+<BaseLayout title="Contact" description="Contact William Lunsford">
+  <h1>Contact</h1>
+  <ul>
+    {links.map((l) => (
+      <li><a href={l.href}>{l.label}</a></li>
+    ))}
+  </ul>
+</BaseLayout>

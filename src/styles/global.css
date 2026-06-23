@@ -602,12 +602,40 @@ body.no-scroll .featured-section:focus-within {
   transition: width 0.1s linear;
 }
 
+.post-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-toc-wrap {
+  order: -1;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .post-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .post-toc-wrap {
+    order: -1;
+    margin-bottom: 0;
+  }
+
+  .post-toc {
+    position: sticky;
+    top: 90px;
+  }
+}
+
 .post-toc {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 1rem 1.25rem;
-  margin: 1.5rem 0 2rem;
 }
 
 .post-toc-title {

@@ -121,16 +121,19 @@ a:hover {
 }
 
 .site-header .brand {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
   color: var(--text);
+  transition: color 0.15s ease;
+}
+
+.site-header .brand svg {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .site-header .brand:hover {
-  color: var(--text);
+  color: var(--accent-soft);
   text-decoration: none;
 }
 

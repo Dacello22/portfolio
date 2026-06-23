@@ -55,12 +55,24 @@ const jsonLd = {
         <symbol id="cyber-star" viewBox="0 0 24 24">
           <path d="M22,12 13.556,13.556 12,22 10.444,13.556 2,12 10.444,10.444 12,2 13.556,10.444Z" />
         </symbol>
+        <symbol id="home-icon" viewBox="0 0 24 24">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.5 10.5 12 3.5l8.5 7M5.5 9.5V20h13V9.5M9.5 20v-6h5v6"
+          />
+        </symbol>
       </defs>
     </svg>
     <header class="site-header">
       <div class="container">
         <nav>
-          <a class="brand" href="/">{SITE_TITLE}</a>
+          <a class="brand" href="/" aria-label={`${SITE_TITLE} — Home`}>
+            <svg><use href="#home-icon" /></svg>
+          </a>
           <div class="links">
             <a href="/blog">Blog</a>
             <a href="/about">About</a>

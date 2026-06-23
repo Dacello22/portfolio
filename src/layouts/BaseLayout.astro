@@ -73,47 +73,5 @@ const jsonLd = {
     <main class="container">
       <slot />
     </main>
-    <div id="page-rise-overlay" class="page-rise-overlay" transition:persist aria-hidden="true"></div>
   </body>
 </html>
-
-<script>
-  // These must match the durations in the .page-rise-overlay CSS rules.
-  const RISE_MS = 500;
-  const HOLD_MS = 150;
-  const FADE_MS = 400;
-
-  function revealAfterRise() {
-    const overlay = document.getElementById("page-rise-overlay");
-    if (!overlay || !overlay.classList.contains("open")) return;
-
-    // The rise animation started on the PREVIOUS page when the link was
-    // clicked, not now — astro:page-load can fire well before that 500ms
-    // is up (client-side nav is fast). Wait out whatever's left of the
-    // rise before starting the fade, so the cover never gets interrupted
-    // mid-slide.
-    const openedAt = Number(overlay.dataset.openedAt || 0);
-    const elapsed = openedAt ? Date.now() - openedAt : RISE_MS;
-    const remaining = Math.max(0, RISE_MS - elapsed) + HOLD_MS;
-
-    setTimeout(() => {
-      overlay.classList.add("fade-out");
-      setTimeout(() => {
-        // Reset with transitions disabled: removing "fade-out" also
-        // removes its opacity transition, so without this the opacity
-        // snaps back to 1 instantly while the transform is still
-        // animating back off-screen — a visible black flash. Disabling
-        // transitions makes both properties reset in the same frame,
-        // while already fully transparent, so nothing flashes.
-        overlay.classList.add("no-transition");
-        overlay.classList.remove("open", "fade-out");
-        delete overlay.dataset.openedAt;
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => overlay.classList.remove("no-transition"));
-        });
-      }, FADE_MS + 20);
-    }, remaining);
-  }
-
-  document.addEventListener("astro:page-load", revealAfterRise);
-</script>

@@ -932,30 +932,6 @@ body.no-scroll .featured-section:focus-within {
   color: var(--accent-soft);
 }
 
-.page-rise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: var(--bg);
-  transform: translateY(100%);
-  opacity: 1;
-  pointer-events: none;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.page-rise-overlay.open {
-  transform: translateY(0);
-}
-
-.page-rise-overlay.fade-out {
-  transition: opacity 0.4s ease;
-  opacity: 0;
-}
-
-.page-rise-overlay.no-transition {
-  transition: none !important;
-}
-
 /* --- Resume ---------------------------------------------------------------- */
 .resume-header {
   display: flex;

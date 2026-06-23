@@ -84,7 +84,7 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
           ))}
         </div>
       </div>
-      <a class="view-all-link" href="/blog" id="view-all-link">View All Post</a>
+      <a class="view-all-link" href="/blog">View All Post</a>
     </div>
   </section>
 </BaseLayout>
@@ -164,19 +164,4 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   }
 
   document.addEventListener("astro:page-load", initFeaturedCarousel);
-
-  function initViewAllLink() {
-    const link = document.getElementById("view-all-link");
-    const overlay = document.getElementById("page-rise-overlay");
-    if (!link || link.dataset.bound === "true") return;
-    link.dataset.bound = "true";
-
-    link.addEventListener("click", () => {
-      if (!overlay) return;
-      overlay.dataset.openedAt = String(Date.now());
-      overlay.classList.add("open");
-    });
-  }
-
-  document.addEventListener("astro:page-load", initViewAllLink);
 </script>

@@ -15,6 +15,7 @@ export const SOCIALS = [
   },
   { label: "GitHub", href: "https://github.com/Dacello22", handle: "@Dacello22" },
   { label: "X", href: "https://x.com/Dacello02", handle: "@Dacello02" },
+  { label: "YouTube", href: "https://www.youtube.com/@Dacello-Games", handle: "@Dacello-Games" },
 ];
 
 export const SKILLS = [

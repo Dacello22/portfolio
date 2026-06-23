@@ -55,34 +55,6 @@ const jsonLd = {
         <symbol id="cyber-star" viewBox="0 0 24 24">
           <path d="M22,12 13.556,13.556 12,22 10.444,13.556 2,12 10.444,10.444 12,2 13.556,10.444Z" />
         </symbol>
-        <symbol id="sound-on" viewBox="0 0 24 24">
-          <path
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3 9.5v5h3.5L11 18V6L6.5 9.5H3Z"
-          />
-          <path
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            d="M15.5 9a3.5 3.5 0 0 1 0 6M18 6.5a7 7 0 0 1 0 11"
-          />
-        </symbol>
-        <symbol id="sound-off" viewBox="0 0 24 24">
-          <path
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3 9.5v5h3.5L11 18V6L6.5 9.5H3Z"
-          />
-          <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M15.5 9.5 20 14M20 9.5l-4.5 4.5" />
-        </symbol>
       </defs>
     </svg>
     <header class="site-header">
@@ -101,74 +73,11 @@ const jsonLd = {
     <main class="container">
       <slot />
     </main>
-    <button class="sound-mute-btn" id="sound-mute-btn" type="button" aria-label="Mute hover sounds" aria-pressed="false">
-      <svg><use href="#sound-on" /></svg>
-    </button>
     <div id="page-rise-overlay" class="page-rise-overlay" transition:persist aria-hidden="true"></div>
   </body>
 </html>
 
 <script>
-  function initHoverSound() {
-    const muteBtn = document.getElementById("sound-mute-btn");
-    if (!muteBtn || muteBtn.dataset.bound === "true") return;
-    muteBtn.dataset.bound = "true";
-
-    const MUTE_KEY = "site-muted";
-    let muted = localStorage.getItem(MUTE_KEY) === "true";
-    let audioCtx: AudioContext | null = null;
-
-    const iconUse = muteBtn.querySelector("use");
-    const updateIcon = () => {
-      iconUse?.setAttribute("href", muted ? "#sound-off" : "#sound-on");
-      muteBtn!.setAttribute("aria-pressed", String(muted));
-    };
-    updateIcon();
-
-    const playDeepHover = () => {
-      if (muted) return;
-      if (!audioCtx) {
-        const Ctor = window.AudioContext || (window as any).webkitAudioContext;
-        audioCtx = new Ctor();
-      }
-      if (audioCtx.state === "suspended") audioCtx.resume();
-
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(80, now);
-      osc.frequency.exponentialRampToValueAtTime(55, now + 0.3);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.045, now + 0.09);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.45);
-    };
-
-    // Delegated "mouseenter" via mouseover + relatedTarget check, so it
-    // works for cards rendered after this script runs (no per-card
-    // binding needed) and fires once per genuine entry, not on every
-    // child mousemove.
-    document.addEventListener("mouseover", (e) => {
-      const target = e.target as HTMLElement;
-      const card = target.closest(".blog-post-card, .carousel-card:not(.placeholder)");
-      if (!card) return;
-      const from = e.relatedTarget as Node | null;
-      if (from && card.contains(from)) return;
-      playDeepHover();
-    });
-
-    muteBtn.addEventListener("click", () => {
-      muted = !muted;
-      localStorage.setItem(MUTE_KEY, String(muted));
-      updateIcon();
-    });
-  }
-
-  document.addEventListener("astro:page-load", initHoverSound);
-
   function revealAfterRise() {
     const overlay = document.getElementById("page-rise-overlay");
     if (!overlay || !overlay.classList.contains("open")) return;

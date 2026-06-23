@@ -20,12 +20,13 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
   const angleDeg = (angle * 180) / Math.PI;
   const cx = 50;
   const cy = 50;
-  const rx = 50; // widened so stars clear the name with a small gap
-  const ry = 73; // base 58 -> stretched to 66 vertically, then scaled up ~10%
+  // Equal radius on both axes — the backdrop box is square (see
+  // .hero-backdrop), so this is an actual circle, not an ellipse.
+  const r = 50;
   const big = i % 3 === 0;
   return {
-    x: cx + rx * Math.cos(angle),
-    y: cy + ry * Math.sin(angle),
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle),
     size: big ? 30 + (i % 6) : 20 + (i % 6),
     opacity: big ? 0.95 : 0.7,
     rotate: Math.round(angleDeg - 90),
@@ -171,7 +172,9 @@ const ringStars = Array.from({ length: RING_COUNT }, (_, i) => {
     link.dataset.bound = "true";
 
     link.addEventListener("click", () => {
-      overlay?.classList.add("open");
+      if (!overlay) return;
+      overlay.dataset.openedAt = String(Date.now());
+      overlay.classList.add("open");
     });
   }
 

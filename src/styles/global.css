@@ -285,8 +285,11 @@ code {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(90vw, 760px);
-  height: min(65vh, 420px);
+  /* Square box — equal width/height so an equal rx/ry below produces
+     an actual circle, not an ellipse stretched by the box's own
+     aspect ratio. */
+  width: min(90vw, 65vh, 680px);
+  height: min(90vw, 65vh, 680px);
   transform: translate(-50%, -50%);
   z-index: 0;
   pointer-events: none;
@@ -947,6 +950,10 @@ body.no-scroll .featured-section:focus-within {
 .page-rise-overlay.fade-out {
   transition: opacity 0.4s ease;
   opacity: 0;
+}
+
+.page-rise-overlay.no-transition {
+  transition: none !important;
 }
 
 /* --- Resume ---------------------------------------------------------------- */
